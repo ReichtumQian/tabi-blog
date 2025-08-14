@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="https://reichtumqian.pages.dev/feed_style.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <tabi:metadata xmlns:tabi="https://github.com/welpo/tabi">
+        <tabi:base_url>https:&#x2F;&#x2F;reichtumqian.pages.dev</tabi:base_url>
+        <tabi:separator>
+            •
+        </tabi:separator>
+        <tabi:about_feeds>This is a web feed, also known as an Atom feed. Subscribe by copying the URL from the address bar into your newsreader. Visit About Feeds to learn more and get started. It&#x27;s free.</tabi:about_feeds>
+        <tabi:visit_the_site>Visit website</tabi:visit_the_site>
+        <tabi:recent_posts>Recent posts</tabi:recent_posts>
+        <tabi:last_updated_on>Updated on $DATE</tabi:last_updated_on>
+        <tabi:default_theme></tabi:default_theme>
+        <tabi:post_listing_date>date</tabi:post_listing_date>
+        <tabi:current_section>Anaconda</tabi:current_section>
+    </tabi:metadata><title>Reichtum's Blog - Anaconda</title>
+        <subtitle>Reichtum&#x27;s Blog</subtitle>
+    <link href="https://reichtumqian.pages.dev/tags/anaconda/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://reichtumqian.pages.dev/tags/anaconda/" rel="alternate" type="text/html"/>
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-09T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/anaconda/atom.xml</id><entry xml:lang="en">
+        <title>Anaconda 全家桶介绍</title>
+        <published>2025-08-09T00:00:00+00:00</published>
+        <updated>2025-08-09T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/anaconda-quan-jia-tong/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/anaconda-quan-jia-tong/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;本笔记内容参考：&lt;a href=&quot;https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1Fm4ZzDEeY&quot;&gt;15分钟彻底搞懂！Anaconda Miniconda conda-forge miniforge Mamb&lt;&#x2F;a&gt;​&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;anaconda-quan-jia-tong&#x2F;assets&#x2F;image-20250809084633-tyh3bow.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;anaconda-xi-lie&quot;&gt;Anaconda 系列&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Anaconda Distribution&lt;&#x2F;strong&gt;：Anaconda Distribution 简称 Anaconda 包，就是我们在 Anaconda 官网上下载的安装包内容。其是使用 Python 编写的，提供了大量科学计算领域的二进制文件和 Python 库。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Anaconda.org&lt;&#x2F;strong&gt;：当 Anaconda 爆火后，显然官方维护的库已经不够大家使用了，因此 Anaconda 公司主动提供了一个 &lt;code&gt;anaconda.org&lt;&#x2F;code&gt;​ 平台供大家上传自己的库，并将自己原先整理的 &lt;code&gt;Anaconda Distribution&lt;&#x2F;code&gt;​ 放置在 &lt;code&gt;anaconda.org&lt;&#x2F;code&gt;​ 的 &lt;code&gt;defaults&lt;&#x2F;code&gt;​ 库 Channel 中。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Miniconda&lt;&#x2F;strong&gt;：随着 &lt;code&gt;anaconda.org&lt;&#x2F;code&gt;​ 的出现，大多数情况下我们不希望完整下载 &lt;code&gt;Anaconda Distribution&lt;&#x2F;code&gt;​，毕竟很多时候我们并不想用里面的包，而是只下载一个 &lt;code&gt;conda&lt;&#x2F;code&gt;​ 的包管理器，并从 &lt;code&gt;anaconda.org&lt;&#x2F;code&gt;​ 下载自己想用的包。因此 Anaconda 公司提供了 &lt;code&gt;miniconda&lt;&#x2F;code&gt;​ 工具，只最小程度满足 &lt;code&gt;conda&lt;&#x2F;code&gt;​ 的包管理器，而不去完整按照 &lt;code&gt;Anaconda Distribution&lt;&#x2F;code&gt;​。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Mamba&lt;&#x2F;strong&gt;：由于 &lt;code&gt;conda&lt;&#x2F;code&gt;​ 工具本身是用 Python 写的，其在计算依赖等情况下效率非常低，因此社区为了提高 &lt;code&gt;conda&lt;&#x2F;code&gt;​ 的性能，重新实现了那些耗时的模块，这种新实现被称为 Mamba。现在 &lt;code&gt;conda&lt;&#x2F;code&gt;​ 或者 &lt;code&gt;miniforge&lt;&#x2F;code&gt;​ 默认都使用 Mamba。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;&#x2F;strong&gt;：一般安装包不要放在 &lt;code&gt;base&lt;&#x2F;code&gt;​环境中，因为 conda 工具本身运行于 &lt;code&gt;base&lt;&#x2F;code&gt;​ 环境，如果把 &lt;code&gt;base&lt;&#x2F;code&gt;​ 环境搞坏了则所有环境都毁了。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;conda-forge-xi-lie&quot;&gt;Conda-Forge 系列&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Conda Forge&lt;&#x2F;strong&gt;：随着 &lt;code&gt;Anaconda.org&lt;&#x2F;code&gt;​ 的出现，社区自发组织了一个名为 &lt;code&gt;conda forge&lt;&#x2F;code&gt;​ 的 channel，现在 &lt;code&gt;conda forge&lt;&#x2F;code&gt;​ 已经是更新最快，包内容最多，且完全免费的 channel 了。而 Anaconda 公司现在对商用 &lt;code&gt;defaults&lt;&#x2F;code&gt;​ channel 收费，因此越来越多人转向了 &lt;code&gt;conda forge&lt;&#x2F;code&gt;​。但是由于 &lt;code&gt;conda&lt;&#x2F;code&gt;​ 默认指向 &lt;code&gt;defaults&lt;&#x2F;code&gt;​ 的 channel，如果要使用 &lt;code&gt;conda forge&lt;&#x2F;code&gt;​需要在每个命令后面都加上 &lt;code&gt;-c conda-forge&lt;&#x2F;code&gt;​。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;MiniForge&lt;&#x2F;strong&gt;：由于 &lt;code&gt;Anaconda&lt;&#x2F;code&gt;​ 和 &lt;code&gt;Miniconda&lt;&#x2F;code&gt;​ 都默认指向 &lt;code&gt;defaults&lt;&#x2F;code&gt;​ 的 channel，因此社区基于 &lt;code&gt;conda&lt;&#x2F;code&gt;​ 的开源程序重新开发了 &lt;code&gt;miniforge&lt;&#x2F;code&gt;​ 以替代 &lt;code&gt;miniconda&lt;&#x2F;code&gt;​，并且默认均指向 &lt;code&gt;conda-forge&lt;&#x2F;code&gt;​。（但是其实只需要习惯于使用 &lt;code&gt;environment.yml&lt;&#x2F;code&gt;​ 指定 &lt;code&gt;channels&lt;&#x2F;code&gt;​ 就可以）&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;&#x2F;strong&gt;：现在 &lt;code&gt;conda-forge&lt;&#x2F;code&gt;​ 的兼容性以及包的数量已经被视为超过 &lt;code&gt;defaults&lt;&#x2F;code&gt;​ channel，因此在实际项目中强烈建议只使用 &lt;code&gt;conda-forge&lt;&#x2F;code&gt;​ channel 并且不要使用 &lt;code&gt;defaults&lt;&#x2F;code&gt;​。几乎唯一的特殊情况是要安装特殊优化的包，例如 &lt;code&gt;mkl&lt;&#x2F;code&gt;​。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;environment-yml&quot;&gt;Environment.yml&lt;&#x2F;h2&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry>
+</feed>
