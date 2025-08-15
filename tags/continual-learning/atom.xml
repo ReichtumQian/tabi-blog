@@ -18,7 +18,7 @@
     <link href="https://reichtumqian.pages.dev/tags/continual-learning/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/continual-learning/" rel="alternate" type="text/html"/>
     <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-15T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/continual-learning/atom.xml</id><entry xml:lang="zh">
-        <title>连续学习的最优控制方式</title>
+        <title>论文阅读：连续学习的最优控制方式</title>
         <published>2025-08-15T00:00:00+00:00</published>
         <updated>2025-08-15T00:00:00+00:00</updated>
         <author>
@@ -30,11 +30,15 @@
             <content type="html">&lt;blockquote&gt;
 &lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;www.123865.com&#x2F;s&#x2F;plj7Vv-fvR23&quot;&gt;Optimal Protocols for Continual Learning via Statistical Physics and Control Theory&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;概述：本篇文章介绍了如何使用最优控制理论调整连续学习中的 Replay 任务、学习率使得最终的 generalization error 最低。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;strong&gt;Multi-Task Learning&lt;&#x2F;strong&gt;: Training a neural network on a series of tasks.&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;Catastrophic Forgetting&lt;&#x2F;strong&gt;: Multi-task learning can lead to catastrophic forgetting, where learning new tasks degrades performance on older ones.&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;Replay&lt;&#x2F;strong&gt;: Present the network with examples from the old tasks while training on the new one to minimize forgetting.&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;model-based-theoretical-framework&quot;&gt;Model-Based Theoretical Framework&lt;&#x2F;h2&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;a-teacher-student-framework&quot;&gt;A Teacher-Student Framework&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;strong&gt;Teacher-Student Framework&lt;&#x2F;strong&gt;: Here we consider a teacher-student framework&lt;&#x2F;p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -54,16 +58,41 @@ $$&lt;&#x2F;p&gt;
   &lt;img src=&quot;assets&#x2F;image-20250815095756-eyuazzc.png&quot; alt=&quot;image&quot;&gt;
   &lt;figcaption&gt;Representation of the continual learning task in the teacher-student setting: (a) A student network is trained on i.i.d. inputs from two teacher networks, defining two different tasks; (b) Sequential training results in catastrophic forgetting.&lt;&#x2F;figcaption&gt;
 &lt;&#x2F;figure&gt;
-&lt;p&gt;&lt;strong&gt;Forward Training Dynamics&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;strong&gt;Optimal Control Framework and Backward Conjugate Dynamics&lt;&#x2F;strong&gt;: Our goal is to derive training strategies that are optimal with respect to the generalization performance &lt;em&gt;at the end of the training&lt;&#x2F;em&gt; and on &lt;em&gt;all tasks&lt;&#x2F;em&gt;. In practice, we minimize a linear combination of the generalization errors on different tasks&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Generalization Error&lt;&#x2F;strong&gt;: The generalization error of the student on task $t$ is given by&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-h(\mathbb{Q}(\alpha_F)) = \sum\limits_{t = 1}^T c_t \epsilon_t(\mathbb{Q}(\alpha_F)), \quad \text{with} \quad c_t \geq 0, \sum\limits_{t = 1}^T c_t = 1.
+\varepsilon_t(\bm{W}, \bm{V}, \bm{W}_&lt;em&gt;) := \frac{1}{2} \left\langle \left( y^{(t)} - \hat{y}^{(t)} \right)^2 \right\rangle = \frac{1}{2} \mathbb{E}_{\bm{x}} \left[ \left( g_&lt;&#x2F;em&gt; \left( \frac{\bm{w}_*^{(t)} \cdot \bm{x}}{\sqrt{N}} \right) - \hat{y}(\bm{x}; \bm{W}, \bm{v}^{(t)}) \right)^2 \right].
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $(\boldsymbol{x}, y^{(t)})$ is a sample, $\hat{y}^{(t)}$ is the prediction, the angular brackets $\langle \cdot \rangle$ denote the expectation over the input distribution.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Overlaps Variables&lt;&#x2F;strong&gt;: The above generalization error depends only through the preactivations&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\lambda_k := \frac{\bm{x} \cdot \bm{w}_k}{\sqrt{N}},, \quad k = 1, \ldots, K,, \qquad \text{and} \qquad \lambda_&lt;em&gt;^{(t)} := \frac{\bm{x} \cdot \bm{w}_&lt;&#x2F;em&gt;^{(t)}}{\sqrt{N}},, \quad t = 1, \ldots, T.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;They define jointly Gaussian variables with zero mean and second moments given by&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+M_{kt} := \mathbb{E}_{\bm{x}} \left[ \lambda_k \lambda_&lt;em&gt;^{(t)} \right] = \frac{\bm{w}_k \cdot \bm{w}_&lt;&#x2F;em&gt;^{(t)}}{N} ,, \
+Q_{kh} := \mathbb{E}_{\bm{x}} \left[ \lambda_k \lambda_h \right] = \frac{\bm{w}_k \cdot \bm{w}_h}{N} ,, \
+S_{tt’} := \mathbb{E}_{\bm{x}} \left[ \lambda_&lt;em&gt;^{(t)} \lambda_&lt;&#x2F;em&gt;^{(t’)} \right] = \frac{\bm{w}_&lt;em&gt;^{(t)} \cdot \bm{w}_&lt;&#x2F;em&gt;^{(t’)}}{N} ,,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;called &lt;em&gt;overlaps&lt;&#x2F;em&gt; in the statistical physics literature. Therefore, the dynamics of the generalization error is entirely captured by the evolution of the readouts $\boldsymbol{V}$ and the overlaps.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Forward Training Dynamics&lt;&#x2F;strong&gt;: We use the shorthand notation $\mathbb{Q} = (\operatorname{vec}(\boldsymbol{Q}), \operatorname{vec}(\boldsymbol{M}), \operatorname{vec}(\boldsymbol{V})) \in \mathbb{R}^{K^2 + 2KT}$. The training dynamics is described by a set of ODEs&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\frac{\mathrm{d}\mathbb{Q}(\alpha)}{\mathrm{d}\alpha} = f_{\mathbb{Q}}(\mathbb{Q}(\alpha), \boldsymbol{u}(\alpha)), \quad \alpha \in (0, \alpha_F].
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;The parameter $\alpha$ denotes the effective training time, and $\boldsymbol{u}$ is the control variable.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;the-optimal-control-framework&quot;&gt;The Optimal Control Framework&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Optimal Control Framework&lt;&#x2F;strong&gt;: Our goal is to derive training strategies that are optimal with respect to the generalization performance &lt;em&gt;at the end of the training&lt;&#x2F;em&gt; and on &lt;em&gt;all tasks&lt;&#x2F;em&gt;. In practice, we minimize a linear combination of the generalization errors on different tasks&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+h(\mathbb{Q}(\alpha_F)) := \sum\limits_{t = 1}^T c_t \epsilon_t(\mathbb{Q}(\alpha_F)), \quad \text{with} \quad c_t \geq 0, \sum\limits_{t = 1}^T c_t = 1.
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;where $\alpha_F$ is the final training time, the coefficients $c_t$ identify the relative importance of different tasks and $\epsilon_t$ denotes the infinite-dimensional limit of the average generalization error on task $t$. We define the cost functional&lt;&#x2F;p&gt;
 &lt;p&gt;$$
 \mathcal{F}[\mathbb{Q}, \hat{\mathbb{Q}}, \bm{u}] = h\left(\mathbb{Q}(\alpha_F)\right) + \int_0^{\alpha_F} \mathrm{d}\alpha , \hat{\mathbb{Q}}(\alpha)^\top \left[ -\frac{\mathrm{d}\mathbb{Q}(\alpha)}{\mathrm{d}\alpha} + f_{\mathbb{Q}}\left(\mathbb{Q}(\alpha), \bm{u}(\alpha)\right) \right],
-$$
-‍&lt;&#x2F;p&gt;
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Here $\hat{\mathbb{Q}} = (\operatorname{vec}(\hat{\boldsymbol{Q}}), \operatorname{vec}(\hat{\boldsymbol{M}}), \hat{\operatorname{vec}(\boldsymbol{V}}))$ is the conjugate order parameters (We can consider it as a Lagrange multiplier that incorperates the dynamics of $\mathbb{Q}$).&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Backward Conjugate Dynamics&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;reading-lian-xu-xue-xi-de-zui-you-kong-zhi-fang-shi&#x2F;assets&#x2F;image-20250815150435-10kdupk.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
 &lt;p&gt;‍&lt;&#x2F;p&gt;
 </content>
         </entry>
