@@ -98,6 +98,120 @@ $$&lt;&#x2F;p&gt;
 &lt;p&gt;‍&lt;&#x2F;p&gt;
 </content>
         </entry><entry xml:lang="zh">
+        <title>最优控制 Optimal Control 概览</title>
+        <published>2025-08-15T00:00:00+00:00</published>
+        <updated>2025-08-15T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/zui-you-kong-zhi-optimal-control-gai-lan/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/zui-you-kong-zhi-optimal-control-gai-lan/</id>
+        
+            <content type="html">&lt;p&gt;近期在学习一些最优控制 Optimal Control 相关的理论，想先学习一下大致的问题，因此整理此笔记。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;wen-ti-miao-shu-problem-formulation&quot;&gt;问题描述 Problem Formulation&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;状态方程 State Equation&lt;&#x2F;strong&gt;：Optimal Control 中考虑描述系统动态的常微分方程&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\dot{x}(t) = f(t, x(t), u(t)),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $t \in [t_0, t_f]$ 是时间，$x(t) \in \mathbb{R}^n$ 是状态向量 state vector，$u(t) \in \mathcal{U} \subset \mathbb{R}^m$ 是控制向量，$\mathcal{U}$ 是 set of admissible controls。&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我们希望通过调整 $u$ 的控制信号来控制 $x(t)$ 的行为。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;边界条件 Boundary Conditions&lt;&#x2F;strong&gt;：往往我们考虑的问题会有一些限制条件，例如&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Initial Condition：初始状态往往是固定的 $x(t_0) = x_0$；&lt;&#x2F;li&gt;
+&lt;li&gt;Terminal Condition：一般是一种约束条件 $\Psi(t_f, x(t_f)) = \mathbf{0}$，其中 $\Psi$ 是一个向量函数&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Cost Functional&lt;&#x2F;strong&gt;：通过控制动力系统，我们希望最小化目标函数 $J$，其一般由两个部分组成：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+J[u(\cdot)] = \phi(t_f, x(t_f)) + \int_{t_0}^{t_f} L(t, x(t), u(t))\mathrm{d}t.
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\phi(t_f, x(t_f))$ 是 terminal cost，与系统在终点的状态有关；&lt;&#x2F;li&gt;
+&lt;li&gt;$L(t, x(t), u(t))$ 是 running cost，表示整个过程中的积累成本。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;我们的目标 Objective&lt;&#x2F;strong&gt;：找到一个控制函数 $u^\ast(\cdot): [t_0, t_f] \to \mathcal{U}$，是的对应的状态轨迹 trajectory 能够最小化指标 $J$。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;pontryagin-s-minimum-principle-pmp&quot;&gt;Pontryagin’s Minimum Principle - PMP&lt;&#x2F;h2&gt;
+&lt;p&gt;PMP 提供了一组最优控制所必须满足的必要条件，其是经典变分法 Calculus of Variations 的推广。但我们这里暂时不管什么是经典变分法，先把 PMP 的定理叙述搞明白。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;哈密顿量 The Hamiltonian&lt;&#x2F;strong&gt;：我们引入一个辅助函数，称为&lt;em&gt;哈密顿量 Hamiltonian&lt;&#x2F;em&gt;：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+H(t,x,u,\lambda) = L(t, x, u) + \lambda(t)^\top f(t, x, u),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $\lambda(t) \in \mathbb{R}^n$ 是一个向量函数，称为 co-state vector 或 adjoint vector。哈密顿量将用于描述 PMP 定理。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;PMP 定理&lt;&#x2F;strong&gt;：设 $u^\ast(\cdot)$ 是最优控制，$x^\ast(\cdot)$ 是对应的最优轨迹，那么必然存在一个非零的 co-state vector $\lambda^\ast(\cdot)$，对于所有 $t \in [t_0, t_f]$ 满足&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;状态方程 State Equation：系统原始动态的重新表述&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\dot{x}^\ast(t) = \frac{\partial H}{\partial \lambda}(t, x^\ast, u^\ast, \lambda^\ast) = f(t, x^\ast, u^\ast).
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;协态方程 Co-state Equation&#x2F;Adjoint Equation：$\lambda^\ast(t)$ 需要满足的方程&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\dot{\lambda}^\ast(t) = - \frac{\partial H}{\partial x}(t, x^\ast, u^\ast, \lambda^\ast).
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;哈密顿量最小化条件 Minimization of the Hamiltonian：对于所有容许的控制 $v \in \mathcal{U}$，最优控制 $u^\ast(t)$ 必须使哈密顿量在任意时刻 $t$ 取最小值&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+H(t, x^\ast(t), u^\ast(t), \lambda^\ast(t)) \leq H(t, x^\ast(t), v, \lambda^\ast(t)).
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果控制 $u$ 没有约束（即 $\mathcal{U} = \mathbb{R}^m$）且 $H$ 对 $u$ 可微，则该条件可以简化为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\frac{\partial H}{\partial u} (t, x^\ast, u^\ast, \lambda^\ast) = 0
+$$&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;横截条件 Transversality Condition：如果 $x(t_f)$ 固定，则 $\lambda(t_f)$ 没有约束；如果 $x(t_f)$ 自由，则&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\lambda^\ast(t_f) = \frac{\partial \phi}{\partial x} (t_f, x^\ast(t_f)).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;总结&lt;&#x2F;strong&gt;：PMP 将复杂的泛函最小化问题转化为两点边值问题 Two-Point Boundary Value Problem&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;dong-tai-gui-hua-yu-hamilton-jacobi-bellman-hjb-fang-cheng&quot;&gt;动态规划与 Hamilton-Jacobi-Bellman (HJB) 方程&lt;&#x2F;h2&gt;
+&lt;p&gt;动态规划是解决最优控制问题的另一种方法，其提供了最优性的&lt;strong&gt;充分条件&lt;&#x2F;strong&gt;，并且能得到&lt;strong&gt;闭环 closed-loop&lt;&#x2F;strong&gt; 或者&lt;strong&gt;反馈 feedback&lt;&#x2F;strong&gt; 控制策略。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;最优值函数 Optimal Value Function&lt;&#x2F;strong&gt;：定义 &lt;em&gt;Optimal Value Function&lt;&#x2F;em&gt; $V(t, x)$ 为从时间 $t$、状态 $x$ 出发，能得到的最小成本&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+V(t, x) = \min_{u(\cdot) \in \mathcal{U}} \left[\phi(t_f, x(t_f)) + \int_t^{t_f} L(\tau, x(\tau), u(\tau) \mathrm{d} \tau\right],
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中轨迹 $x(\tau)$ 满足 $\dot{x} = f(\tau, x, u)$ 和 $x(t) = x$。根据其定义，我们有 terminal condition&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+V(t_f, x) = \phi(t_f, x).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Bellman’s Principle of Optimality&lt;&#x2F;strong&gt;：无论过去的状态和决策如何，余下的决策对于由过去决策所形成的状态而言，也必须构成一个最优策略。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;HJB 方程&lt;&#x2F;strong&gt;：根据 Bellman’s Priciple of Optimality，考虑一个极小的时间段 $[t, t+\delta t]$，&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+V(t, x) = \min_{u(t)} [L(t,x,u) \delta t + V(t + \delta t, x(t + \delta t)) + o(\delta t)]
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;对 $V(t + \delta t, x(t+\delta t))$ 进行泰勒展开&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+V(t + \delta t, x+ \delta x) \approx V(t,x) + \frac{\partial V}{\partial t} \delta t + \left( \frac{\partial V}{\partial x}\right) \dot{x} \delta t.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;将展开式代入，并用 $\dot{x} = f(t, x, u)$ 替换，整理后两侧同时除以 $\delta t$，并令 $\delta t \to 0$，得到 &lt;strong&gt;HJB 方程&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;\frac{\partial V}{\partial t} (t, x) = \min_{u \in \mathcal{U}} \left[ L(t, x, u) + \left( \frac{\partial V}{\partial x}(t, x) \right)^{\top} f(t,x,u) \right].
+$$&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;与哈密顿量的关系&lt;&#x2F;strong&gt;：如果我们将 $\frac{\partial V}{\partial x}$ 视作一个整体，则 HJB 方程可以更紧凑地写为：&lt;&#x2F;p&gt;
+&lt;p&gt;$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;\frac{\partial V}{\partial t} = \min_{u \in \mathcal{U}} H \left(t, x, u, \frac{\partial V}{\partial x}\right),
+$$&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;变为一个 PDE，边界条件为 $V(t_f, x)  = \phi(t_f, x)$。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;求解与应用&lt;&#x2F;strong&gt;：如果能求解上面的 PDE 得到 $V(t,x)$，则最优控制可以通过最小化哈密顿量在每个时刻 $(t,x)$ 得到&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+u^\ast(t, x) = \arg\min_{u \in \mathcal{U}} H \left( t, x, u, \frac{\partial V}{\partial x}(t,x) \right).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;但是在高位 state space 中，HJB 方程的求解非常困难，这也被称为维数灾难 curse of dimensionality。&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>Transformers 库 Trainer 使用与自定义优化器</title>
         <published>2025-08-13T00:00:00+00:00</published>
         <updated>2025-08-13T00:00:00+00:00</updated>
