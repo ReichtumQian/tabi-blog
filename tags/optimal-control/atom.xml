@@ -60,18 +60,18 @@ $$&lt;&#x2F;p&gt;
 &lt;&#x2F;figure&gt;
 &lt;p&gt;&lt;strong&gt;Generalization Error&lt;&#x2F;strong&gt;: The generalization error of the student on task $t$ is given by&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-\varepsilon_t(\boldsymbol{W}, \boldsymbol{V}, \boldsymbol{W}_&lt;em&gt;) := \frac{1}{2} \left\langle \left( y^{(t)} - \hat{y}^{(t)} \right)^2 \right\rangle = \frac{1}{2} \mathbb{E}_{\boldsymbol{x}} \left[ \left( g_&lt;&#x2F;em&gt; \left( \frac{\boldsymbol{w}_*^{(t)} \cdot \boldsymbol{x}}{\sqrt{N}} \right) - \hat{y}(\boldsymbol{x}; \boldsymbol{W}, \boldsymbol{v}^{(t)}) \right)^2 \right].
+\varepsilon_t(\boldsymbol{W}, \boldsymbol{V}, \boldsymbol{W}_*) := \frac{1}{2} \left\langle \left( y^{(t)} - \hat{y}^{(t)} \right)^2 \right\rangle = \frac{1}{2} \mathbb{E}_{\boldsymbol{x}} \left[ \left( g_* \left( \frac{\boldsymbol{w}_*^{(t)} \cdot \boldsymbol{x}}{\sqrt{N}} \right) - \hat{y}(\boldsymbol{x}; \boldsymbol{W}, \boldsymbol{v}^{(t)}) \right)^2 \right].
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;where $(\boldsymbol{x}, y^{(t)})$ is a sample, $\hat{y}^{(t)}$ is the prediction, the angular brackets $\langle \cdot \rangle$ denote the expectation over the input distribution.&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;Overlaps Variables&lt;&#x2F;strong&gt;: The above generalization error depends only through the preactivations&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-\lambda_k := \frac{\boldsymbol{x} \cdot \boldsymbol{w}_k}{\sqrt{N}},, \quad k = 1, \ldots, K,, \qquad \text{and} \qquad \lambda_&lt;em&gt;^{(t)} := \frac{\boldsymbol{x} \cdot \boldsymbol{w}_&lt;&#x2F;em&gt;^{(t)}}{\sqrt{N}},, \quad t = 1, \ldots, T.
+\lambda_k := \frac{\boldsymbol{x} \cdot \boldsymbol{w}_k}{\sqrt{N}},, \quad k = 1, \ldots, K,, \qquad \text{and} \qquad \lambda_*^{(t)} := \frac{\boldsymbol{x} \cdot \boldsymbol{w}_*^{(t)}}{\sqrt{N}},, \quad t = 1, \ldots, T.
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;They define jointly Gaussian variables with zero mean and second moments given by&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-M_{kt} := \mathbb{E}_{\boldsymbol{x}} \left[ \lambda_k \lambda_&lt;em&gt;^{(t)} \right] = \frac{\boldsymbol{w}_k \cdot \boldsymbol{w}_&lt;&#x2F;em&gt;^{(t)}}{N} ,, \
+M_{kt} := \mathbb{E}_{\boldsymbol{x}} \left[ \lambda_k \lambda_*^{(t)} \right] = \frac{\boldsymbol{w}_k \cdot \boldsymbol{w}_*^{(t)}}{N} ,, \
 Q_{kh} := \mathbb{E}_{\boldsymbol{x}} \left[ \lambda_k \lambda_h \right] = \frac{\boldsymbol{w}_k \cdot \boldsymbol{w}_h}{N} ,, \
-S_{tt’} := \mathbb{E}_{\boldsymbol{x}} \left[ \lambda_&lt;em&gt;^{(t)} \lambda_&lt;&#x2F;em&gt;^{(t’)} \right] = \frac{\boldsymbol{w}_&lt;em&gt;^{(t)} \cdot \boldsymbol{w}_&lt;&#x2F;em&gt;^{(t’)}}{N} ,,
+S_{tt’} := \mathbb{E}_{\boldsymbol{x}} \left[ \lambda_*^{(t)} \lambda_*^{(t’)} \right] = \frac{\boldsymbol{w}_*^{(t)} \cdot \boldsymbol{w}_*^{(t’)}}{N} ,,
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;called &lt;em&gt;overlaps&lt;&#x2F;em&gt; in the statistical physics literature. Therefore, the dynamics of the generalization error is entirely captured by the evolution of the readouts $\boldsymbol{V}$ and the overlaps.&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;Forward Training Dynamics&lt;&#x2F;strong&gt;: We use the shorthand notation $\mathbb{Q} = (\operatorname{vec}(\boldsymbol{Q}), \operatorname{vec}(\boldsymbol{M}), \operatorname{vec}(\boldsymbol{V})) \in \mathbb{R}^{K^2 + 2KT}$. The training dynamics is described by a set of ODEs&lt;&#x2F;p&gt;
