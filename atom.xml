@@ -193,17 +193,11 @@ $$&lt;&#x2F;p&gt;
 V(t + \delta t, x+ \delta x) \approx V(t,x) + \frac{\partial V}{\partial t} \delta t + \left( \frac{\partial V}{\partial x}\right) \dot{x} \delta t.
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;将展开式代入，并用 $\dot{x} = f(t, x, u)$ 替换，整理后两侧同时除以 $\delta t$，并令 $\delta t \to 0$，得到 &lt;strong&gt;HJB 方程&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
-&lt;p&gt;$$&lt;&#x2F;p&gt;
-&lt;ul&gt;
-&lt;li&gt;\frac{\partial V}{\partial t} (t, x) = \min_{u \in \mathcal{U}} \left[ L(t, x, u) + \left( \frac{\partial V}{\partial x}(t, x) \right)^{\top} f(t,x,u) \right].
-$$&lt;&#x2F;li&gt;
-&lt;&#x2F;ul&gt;
+&lt;p&gt;$$- \frac{\partial V}{\partial t} (t, x) = \min_{u \in \mathcal{U}} \left[ L(t, x, u) + \left( \frac{\partial V}{\partial x}(t, x) \right)^{\top} f(t,x,u) \right].
+$$&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;与哈密顿量的关系&lt;&#x2F;strong&gt;：如果我们将 $\frac{\partial V}{\partial x}$ 视作一个整体，则 HJB 方程可以更紧凑地写为：&lt;&#x2F;p&gt;
-&lt;p&gt;$$&lt;&#x2F;p&gt;
-&lt;ul&gt;
-&lt;li&gt;\frac{\partial V}{\partial t} = \min_{u \in \mathcal{U}} H \left(t, x, u, \frac{\partial V}{\partial x}\right),
-$$&lt;&#x2F;li&gt;
-&lt;&#x2F;ul&gt;
+&lt;p&gt;$$- \frac{\partial V}{\partial t} = \min_{u \in \mathcal{U}} H \left(t, x, u, \frac{\partial V}{\partial x}\right),
+$$&lt;&#x2F;p&gt;
 &lt;p&gt;变为一个 PDE，边界条件为 $V(t_f, x)  = \phi(t_f, x)$。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;求解与应用&lt;&#x2F;strong&gt;：如果能求解上面的 PDE 得到 $V(t,x)$，则最优控制可以通过最小化哈密顿量在每个时刻 $(t,x)$ 得到&lt;&#x2F;p&gt;
 &lt;p&gt;$$
