@@ -90,6 +90,35 @@ $$&lt;&#x2F;p&gt;
 &lt;p&gt;‍&lt;&#x2F;p&gt;
 </content>
         </entry><entry xml:lang="zh">
+        <title>Heavy-ball 与 Momentum 算法等价性</title>
+        <published>2025-08-16T00:00:00+00:00</published>
+        <updated>2025-08-16T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/heavy-ball-yu-momentum-suan-fa-deng-jia-xing/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/heavy-ball-yu-momentum-suan-fa-deng-jia-xing/</id>
+        
+            <content type="html">&lt;p&gt;依稀记得 Heavy-Ball 动量格式和 Momentum 动量格式是完全等价的，但是总是记不清楚，因此重新写一遍。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Heavy-Ball 动量格式&lt;&#x2F;strong&gt;：Heavy-Ball 动量格式为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\theta_{t+1} - \theta_t = \gamma (\theta_{t} - \theta_{t-1}) + \eta \nabla f(\theta_t)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;现代 Momentum 格式&lt;&#x2F;strong&gt;：现代 Momentum 动量格式为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+v_{t+1} = \beta v_t + \nabla f(\theta_t), \quad \theta_{t+1} = \theta_t - \eta v_{t+1}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Heavy-Ball 与 Momentum 格式的等价性&lt;&#x2F;strong&gt;：Heavy-Ball 和 Momentum 在数学上是完全等价的，且 $\gamma = \beta$。&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;证明：这里只从 Momentum 出发推导 Heavy-Ball，将 Momentum 第一个式子两侧同时乘上学习率 $\eta$ 得到&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\eta v_{t+1} = \beta \eta v_t + \eta \nabla f(\theta_t),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;而根据第二个式子得到 $\eta v_{t+1} = \theta_{t+1} - \theta_t$，因此带入上面的等式得到结论。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>论文阅读：连续学习的最优控制方式</title>
         <published>2025-08-15T00:00:00+00:00</published>
         <updated>2025-08-15T00:00:00+00:00</updated>
