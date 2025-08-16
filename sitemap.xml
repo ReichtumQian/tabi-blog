@@ -39,6 +39,10 @@
         <lastmod>2025-08-16</lastmod>
     </url>
     <url>
+        <loc>https://reichtumqian.pages.dev/blog/hugging-face-trl-wei-diao-ku-dai-ma-yue-du/</loc>
+        <lastmod>2025-08-16</lastmod>
+    </url>
+    <url>
         <loc>https://reichtumqian.pages.dev/blog/page/1/</loc>
     </url>
     <url>
@@ -99,5 +103,8 @@
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/transformers-library/</loc>
+    </url>
+    <url>
+        <loc>https://reichtumqian.pages.dev/tags/trl-library/</loc>
     </url>
 </urlset>
