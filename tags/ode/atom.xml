@@ -50,17 +50,17 @@ $$&lt;&#x2F;p&gt;
 &lt;li&gt;Exponential Stability 指数稳定：比渐近稳定更强的稳定性，如果系统初始状态足够接近平衡点，系统不仅收敛到平衡点，而且其收敛速度至少像指数函数 $e^{-\lambda t}$ 一样快，其中 $\lambda &amp;gt; 0$。&lt;&#x2F;li&gt;
 &lt;li&gt;Global Stability 全局稳定：前述稳定性都是局部的，全局稳定性将这一范围扩展至整个状态空间 $\mathbb{R}^n$。&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
-&lt;p&gt;&lt;strong&gt;Lyapunov 稳定性&lt;&#x2F;strong&gt;：系统在平衡点 $\mathbf{x} = \mathbf{0}$ 是 Lyapunov 稳定的如果对于任意 $\epsilon &amp;gt; 0$，存在 $\delta &amp;gt; 0$，若 $|\mathbf{x}(t_0)| &amp;lt; \delta$ 满足&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Lyapunov 稳定性&lt;&#x2F;strong&gt;：系统在平衡点 $\mathbf{x} = \mathbf{0}$ 是 Lyapunov 稳定的如果对于任意 $\epsilon &amp;gt; 0$，存在 $\delta &amp;gt; 0$，若 $\\|\mathbf{x}(t_0)\\| &amp;lt; \delta$ 满足&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-|\mathbf{x}(t) | &amp;lt; \epsilon, \quad t \geq t_0.
+\\|\mathbf{x}(t) \\| &amp;lt; \epsilon, \quad t \geq t_0.
 $$&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;strong&gt;Asymptotic Stability&lt;&#x2F;strong&gt;：系统在平衡点 $\mathbf{x} = \mathbf{0}$ 是 Asymptotic 稳定的如果其是 Lyapunov 稳定的，且具有吸引性，即存在 $\delta &amp;gt; 0$，若 $| \mathbf{x}(t_0) | &amp;lt; \delta$，有&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Asymptotic Stability&lt;&#x2F;strong&gt;：系统在平衡点 $\mathbf{x} = \mathbf{0}$ 是 Asymptotic 稳定的如果其是 Lyapunov 稳定的，且具有吸引性，即存在 $\delta &amp;gt; 0$，若 $\\| \mathbf{x}(t_0) \\| &amp;lt; \delta$，有&lt;&#x2F;p&gt;
 &lt;p&gt;$$
 \lim\limits_{t \to \infty} \mathbf{x}(t) = \mathbf{0}.
 $$&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;strong&gt;Exponential Stability&lt;&#x2F;strong&gt;：系统在平衡点 $\mathbf{x} = \mathbf{0}$ 是指数稳定的如果存在 $\alpha &amp;gt; 0$，$\lambda &amp;gt; 0$，$\delta &amp;gt; 0$ 使得 $|\mathbf{x}(t_0)| &amp;lt; \delta$ 时，&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Exponential Stability&lt;&#x2F;strong&gt;：系统在平衡点 $\mathbf{x} = \mathbf{0}$ 是指数稳定的如果存在 $\alpha &amp;gt; 0$，$\lambda &amp;gt; 0$，$\delta &amp;gt; 0$ 使得 $\\|\mathbf{x}(t_0)\\| &amp;lt; \delta$ 时，&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-|\mathbf{x}(t)| \leq \alpha |\mathbf{x}(t_0)|e^{-\lambda (t - t_0)}.
+\\|\mathbf{x}(t)\\| \leq \alpha \\|\mathbf{x}(t_0)\\|e^{-\lambda (t - t_0)}.
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;这里 $\lambda$ 称为 rate of convergence，$\alpha$ 反映系统的瞬态响应特性。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
@@ -73,7 +73,7 @@ $$&lt;&#x2F;p&gt;
 &lt;p&gt;类似的，也可以定义全局指数稳定。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;lyapunov-s-second-method&quot;&gt;Lyapunov’s Second Method&lt;&#x2F;h2&gt;
 &lt;p&gt;李雅普诺夫第二方法（也称直接法）允许我们不求解微分方程本身来分析稳定性。该方法的核心是寻找一个标量函数，即李雅普诺夫函数。&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;strong&gt;径向无界 Radially Unbounded&lt;&#x2F;strong&gt;：如果当 $|\mathbf{x}| \to \infty$ 时，$V(\mathbf{x}) \to \infty$，则称 $V(\mathbf{x})$ 是 radially unbounded 的。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;径向无界 Radially Unbounded&lt;&#x2F;strong&gt;：如果当 $\\|\mathbf{x}\\| \to \infty$ 时，$V(\mathbf{x}) \to \infty$，则称 $V(\mathbf{x})$ 是 radially unbounded 的。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;Lyapunov 稳定性定理&lt;&#x2F;strong&gt;：考虑自治系统&lt;&#x2F;p&gt;
 &lt;p&gt;$$
 \frac{\mathrm{d} \mathbf{x}}{\mathrm{d} t} = {f}(\mathbf{x}), \quad f(\mathbf{0}) = \mathbf{0}.
