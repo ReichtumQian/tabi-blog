@@ -102,7 +102,7 @@ $$&lt;&#x2F;p&gt;
             <content type="html">&lt;p&gt;依稀记得 Heavy-Ball 动量格式和 Momentum 动量格式是完全等价的，但是总是记不清楚，因此重新写一遍。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;Heavy-Ball 动量格式&lt;&#x2F;strong&gt;：Heavy-Ball 动量格式为&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-\theta_{t+1} - \theta_t = \gamma (\theta_{t} - \theta_{t-1}) + \eta \nabla f(\theta_t)
+\theta_{t+1} - \theta_t = \gamma (\theta_{t} - \theta_{t-1}) - \eta \nabla f(\theta_t)
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;现代 Momentum 格式&lt;&#x2F;strong&gt;：现代 Momentum 动量格式为&lt;&#x2F;p&gt;
 &lt;p&gt;$$
@@ -114,7 +114,7 @@ $$&lt;&#x2F;p&gt;
 &lt;p&gt;$$
 \eta v_{t+1} = \beta \eta v_t + \eta \nabla f(\theta_t),
 $$&lt;&#x2F;p&gt;
-&lt;p&gt;而根据第二个式子得到 $\eta v_{t+1} = \theta_{t+1} - \theta_t$，因此带入上面的等式得到结论。&lt;&#x2F;p&gt;
+&lt;p&gt;而根据第二个式子得到 $-\eta v_{t+1} = \theta_{t+1} - \theta_t$，因此带入上面的等式得到结论。&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;p&gt;‍&lt;&#x2F;p&gt;
 </content>
