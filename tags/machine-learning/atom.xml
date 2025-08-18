@@ -45,7 +45,7 @@ $$&lt;&#x2F;p&gt;
 &lt;p&gt;$$
 \Delta W = BA,
 $$&lt;&#x2F;p&gt;
-&lt;p&gt;其中 $B \in \mathbb{R}^{d \times r}$， $A \in \mathbb{R}^{r \times k}$，$0 &amp;lt; r \ll \min{d, k}$ 为 LoRA 近似矩阵的秩。通常 $A$ 使用高斯分布初始化，$B$ 使用零初始化，这样 $\Delta W$ 就被初始化为 $\mathcal{O}$。&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $B \in \mathbb{R}^{d \times r}$， $A \in \mathbb{R}^{r \times k}$，$0 &amp;lt; r \ll \min\{d, k\}$ 为 LoRA 近似矩阵的秩。通常 $A$ 使用高斯分布初始化，$B$ 使用零初始化，这样 $\Delta W$ 就被初始化为 $\mathcal{O}$。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;LoRA 的更新步骤&lt;&#x2F;strong&gt;：在实际程序中，我们一般会见到 &lt;code&gt;lora_r&lt;&#x2F;code&gt;​ 和 &lt;code&gt;lora_alpha&lt;&#x2F;code&gt;​ 两个超参数，因为实际更新的方式为&lt;&#x2F;p&gt;
 &lt;p&gt;$$
 W = W_0 + \frac{\alpha}{r}(BA),
