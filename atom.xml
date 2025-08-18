@@ -17,7 +17,44 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-16T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-18T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+        <title>LoRA (Low-Rank Adaptation)</title>
+        <published>2025-08-18T00:00:00+00:00</published>
+        <updated>2025-08-18T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/blog-lora-low-rank-adaptation/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/blog-lora-low-rank-adaptation/</id>
+        
+            <content type="html">&lt;h2 id=&quot;bei-jing-quan-wei-diao-full-fine-tuning&quot;&gt;背景：全微调（Full Fine-Tuning）&lt;&#x2F;h2&gt;
+&lt;p&gt;在 LoRA 出现前，一般进行大模型微调都会执行全微调，即将原模型的所有参数都在下游任务上进行调整。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;网络层的数学表示&lt;&#x2F;strong&gt;：这里以线性层（全连接层）为例，假设输入向量为 $x \in \mathbb{R}^k$，输出向量为 $h \in \mathbb{R}^d$，该层的计算可以表示为：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+h = W x,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $W \in \mathbb{R}^{d \times k}$ 是该层权重矩阵。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;全量微调&lt;&#x2F;strong&gt;：假设预训练好的权重矩阵为 $W_0 \in \mathbb{R}^{d \times k}$，&lt;em&gt;Full Fine-Tuning&lt;&#x2F;em&gt; 在新的数据集上更新完整的权重矩阵&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+W = W_0 + \Delta W,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $\Delta W \in \mathbb{R}^{d \times k}$ 是微调过程中的权重更新量。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;lora-de-si-xiang-jia-she&quot;&gt;LoRA 的思想假设&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;低秩假设&lt;&#x2F;strong&gt;：LoRA (Low-Rank Adaptation) 的基本思想是微调过程中，权重更新矩阵 $\Delta W$ 有很低的 intrinsic rank，即 $\Delta W$ 尺寸虽然很大，但是其包含的信息可以用远小于其维数的秩 $r$ 来有效表示。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;低秩分解 Low-Rank Decomposition&lt;&#x2F;strong&gt;：LoRA 不学习巨大的 $\Delta W$ 矩阵本身，而是通过 &lt;em&gt;Low-Rank Decomposition&lt;&#x2F;em&gt; 来近似它，即&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\Delta W = BA,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $B \in \mathbb{R}^{d \times r}$， $A \in \mathbb{R}^{r \times k}$，$0 &amp;lt; r \ll \min{d, k}$ 为 LoRA 近似矩阵的秩。通常 $A$ 使用高斯分布初始化，$B$ 使用零初始化，这样 $\Delta W$ 就被初始化为 $\mathcal{O}$。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;LoRA 的更新步骤&lt;&#x2F;strong&gt;：在实际程序中，我们一般会见到 &lt;code&gt;lora_r&lt;&#x2F;code&gt;​ 和 &lt;code&gt;lora_alpha&lt;&#x2F;code&gt;​ 两个超参数，因为实际更新的方式为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+W = W_0 + \frac{\alpha}{r}(BA),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $r$ 是 LoRA rank，$\alpha$ 为 scaling factor。一般来说，我们会将 &lt;code&gt;lora_alpha&lt;&#x2F;code&gt;​ 设置得比 &lt;code&gt;lora_r&lt;&#x2F;code&gt;​ 大一点，例如 $\alpha = 2r$​。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;LoRA 训练与推理&lt;&#x2F;strong&gt;：在训练过程中，我们冻结 $W_0$，只更新 $A, B$。而在推理部署时，将 $A,B$ 合并回权重矩阵 $W$，这样我们在推理过程中也不需要额外的内存&#x2F;显存开销。&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>动力系统稳定性概览</title>
         <published>2025-08-16T00:00:00+00:00</published>
         <updated>2025-08-16T00:00:00+00:00</updated>
