@@ -55,6 +55,10 @@
         <lastmod>2025-08-16</lastmod>
     </url>
     <url>
+        <loc>https://reichtumqian.pages.dev/blog/mutagen/</loc>
+        <lastmod>2025-08-19</lastmod>
+    </url>
+    <url>
         <loc>https://reichtumqian.pages.dev/blog/page/1/</loc>
     </url>
     <url>
@@ -90,6 +94,9 @@
         <loc>https://reichtumqian.pages.dev/tags/fine-tuning/</loc>
     </url>
     <url>
+        <loc>https://reichtumqian.pages.dev/tags/it-operations/</loc>
+    </url>
+    <url>
         <loc>https://reichtumqian.pages.dev/tags/machine-learning/</loc>
     </url>
     <url>
@@ -115,6 +122,9 @@
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/pytorch/</loc>
+    </url>
+    <url>
+        <loc>https://reichtumqian.pages.dev/tags/tools/</loc>
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/transformers-library/</loc>
