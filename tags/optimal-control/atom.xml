@@ -17,7 +17,100 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/optimal-control/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/optimal-control/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-15T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/optimal-control/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-22T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/optimal-control/atom.xml</id><entry xml:lang="zh">
+        <title>论文阅读：Method of Successive Approximations</title>
+        <published>2025-08-22T00:00:00+00:00</published>
+        <updated>2025-08-22T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/blog-method-of-successive-approximations/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/blog-method-of-successive-approximations/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;1803.01299&quot;&gt;[1803.01299] An Optimal Control Approach to Deep Learning and Applications to Discrete-Weight Neural Networks&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;the-optimal-control-viewpoint&quot;&gt;The Optimal Control Viewpoint&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Neural Networks as Dynamical System&lt;&#x2F;strong&gt;: Let $T \in \mathbb{Z}_+$ denote the number layers and $\{x_{s,0} \in \mathbb{R}^{d_0}: s = 0, 1, \cdots, S\}$ represent $S + 1$ inputs (images, time-series). Consider the dynamical system&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+x_{s,t+1}=f_t(x_{s,t},\theta_t),\quad t=0,1,\ldots,T-1,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $f_{t}:\mathbb{R}^{d_{t}}\times\Theta_{t}\to\mathbb{R}^{d_{t+1}}$ is a transformation on the state, $\Theta_t$ is the trainable parameter set.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Objective of Training&lt;&#x2F;strong&gt;: The goal of training is to adjust the weights $\bm{\theta} := \{\theta_t: t = 0, 1, \cdots, T-1\}$ to minimize some loss function between final output $x_{s, T}$ and true targets $y_s$ of $x_{s,0}$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Statement of Problem&lt;&#x2F;strong&gt;: Define $\Phi_s: \mathbb{R}^{d_T} \to \mathbb{R}$ that measures the loss, and the average loss function is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\frac{1}{S}\sum_s \Phi_s(x_{s,T})
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;We also consider some regularization terms $L_t: \mathbb{R}^{d_t} \times \Theta_t \to \mathbb{R}$, thus the problem is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\min_{\boldsymbol{\theta}\in\boldsymbol{\Theta}}J(\boldsymbol{\theta}):=\frac{1}{S}\sum_{s=1}^{S}\Phi_{s}(x_{s,T})+\frac{1}{S}\sum_{s=1}^{S}\sum_{t=0}^{T-1}L_{t}(x_{s,t},\theta_{t}),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+x_{s,t+1}=f_t(x_{s,t},\theta_t), \quad t=0,\cdots,T-1, \quad s\in \{1,2,\cdots,S\}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\bm{\Theta} := \{\Theta_0 \times \cdots \times \Theta_{T-1}\}$.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;the-pontryagin-s-maximum-principle&quot;&gt;The Pontryagin’s Maximum Principle&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Hamiltonian Function&lt;&#x2F;strong&gt;: Let $\bm{\theta}^\ast = \{\theta_0, \cdots, \theta_{T-1}\} \in \bm{\Theta}$ be a solution of the problem. For each $t$, define the Hamiltonian function $H_{t}:\mathbb{R}^{d_{t}}\times\mathbb{R}^{d_{t+1}}\times\Theta_{t}\to\mathbb{R}$​&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+H_t(x,p,\theta):=p\cdot f_t(x,\theta)-\frac{1}{S}L_t(x,\theta).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $p \in \mathbb{R}^{d_{t+1}}$ is the co-state vector.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Discrete PMP, Informal Statement&lt;&#x2F;strong&gt;: Let $f_t$ and $\Phi_s, s = 1,2,\cdots, S$ be sufficiently smooth in $x$. Assume for each $t$ and $x \in \mathbb{R}^{d_t}$, the sets $\{f_t(x,\theta): \theta \in \Theta_t\}$ and $\{L_t(x,\theta): \theta \in \Theta_t\}$ are convex. Then there exists $\boldsymbol{p}_{s}^{*}:=\{p_{s,t}^{*}:t=0,\ldots,{T}\},$ such that&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+x_{s,t+1}^* = \nabla_p H_t(x_{s,t}^*, p_{s,t+1}^*, \theta_t^*), \quad x_{s,0}^* = x_{s,0}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+p_{s,t}^* = \nabla_x H_t(x_{s,t}^*, p_{s,t+1}^*, \theta_t^*), \quad p_{s,T}^* = -\frac{1}{S} \nabla \Phi_s(x_{s,T}^*)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\sum_{s=1}^S H_t(x_{s,t}^*, p_{s,t+1}^*, \theta_t^*) \geq \sum_{s=1}^S H_t(x_{s,t}^*, p_{s,t+1}^*, \theta), \forall \theta \in \Theta_t
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;for $t = 0, 1, \cdots, T-1$ and $s = 1,2,\cdots, S$.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;the-method-of-successive-approximations-msa&quot;&gt;The Method of Successive Approximations (MSA)&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Statement of MSA Algorithm&lt;&#x2F;strong&gt;: Start from an initial guess $\boldsymbol{\theta}^{0}=\{\theta_{t}^{0}\in\Theta_{t}:t=0\ldots,T-1\}$,&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;State Equation: $x_{s, t}$ means the state of the $s$-th sample at the $t$-th layer, $f_t$ is the transformation function at the $t$-th layer, $\theta_t$ is the control at the $t$-th layer&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+x_{s,t+1}^{\boldsymbol{\theta}^0}=f_t(x_{s,t}^{\boldsymbol{\theta}^0},\theta_t^0),\quad x_{s,0}^{\boldsymbol{\theta}^0}=x_{s,0},
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Co-State Equation: $p_{s,t}$ means the co-state of the $s$-th sample at the $t$-th layer, $\Phi_s$ measures the loss of the $s$-th sample, $H_t$ is the Hamiltonian function&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+p_{s,t}^{\boldsymbol{\theta}^0}=\nabla_xH_t(x_{s,t}^{\boldsymbol{\theta}^0},p_{s,t+1}^{\boldsymbol{\theta}^0},\theta_t^0),\quad p_{s,T}^{\boldsymbol{\theta}^0}=-\frac{1}{S}\nabla\Phi_s(x_{s,T}^{\boldsymbol{\theta}^0}),
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Maximization of the Hamiltonian:&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\theta_t^1=\arg\max_{\theta\in\Theta_t}\sum_{s=1}^SH_t(x_{s,t}^{\boldsymbol{\theta}^0},p_{s,t+1}^{\boldsymbol{\theta}^0},\theta),
+\quad t=0,\ldots,T-1.
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;MSA Algorithm&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Initialize&lt;&#x2F;strong&gt;: $\boldsymbol{\theta}^{0}=\{\theta_{t}^{0}\in\Theta_{t}:t=0\ldots,T-1\};$&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;For&lt;&#x2F;strong&gt; $k = 0$ to $K$ &lt;strong&gt;do&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;$x_{s,t+1}^{\boldsymbol{\theta}^k}=f_t(x_{s,t}^{\boldsymbol{\theta}^k},\theta_t^k)$ and $x_{s,0}^{\boldsymbol{\theta}^k}=x_{s,0}$ for all $s$ and $t$;&lt;&#x2F;li&gt;
+&lt;li&gt;$p_{s,t}^{\boldsymbol{\theta}^k}=\nabla_xH_t(x_{s,t}^{\boldsymbol{\theta}^k},p_{s,t+1}^{\boldsymbol{\theta}^k},\theta_t^k),p_{s,T}^{\boldsymbol{\theta}^k}=-\frac{1}{S}\nabla\Phi_s(x_{s,T})$ for all $s$ and $t$;&lt;&#x2F;li&gt;
+&lt;li&gt;$\theta_t^{k+1}=\arg\max_{\theta\in\Theta_t}\sum_{s=1}^SH_t(x_{s,t}^{\boldsymbol{\theta}^k},p_{s,t+1}^{\boldsymbol{\theta}^k},\theta)$ for $t = 0, \cdots, T-1$;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;End for&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;blockquote&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>论文阅读：连续学习的最优控制方式</title>
         <published>2025-08-15T00:00:00+00:00</published>
         <updated>2025-08-15T00:00:00+00:00</updated>
