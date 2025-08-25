@@ -17,7 +17,23 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-22T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-25T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+        <title>Adam: Adaptive Moment Estimation</title>
+        <published>2025-08-25T00:00:00+00:00</published>
+        <updated>2025-08-25T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/blog-adam/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/blog-adam/</id>
+        
+            <content type="html">&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;blog-adam&#x2F;assets&#x2F;image-20250825161145-yxo8sbr.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;blog-adam&#x2F;assets&#x2F;image-20250825161155-ft1cy96.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;blog-adam&#x2F;assets&#x2F;image-20250825161214-ns3zjlt.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;blog-adam&#x2F;assets&#x2F;image-20250825161225-zib63jo.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;blog-adam&#x2F;assets&#x2F;image-20250825161233-000qesq.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>论文阅读：Method of Successive Approximations</title>
         <published>2025-08-22T00:00:00+00:00</published>
         <updated>2025-08-22T00:00:00+00:00</updated>
