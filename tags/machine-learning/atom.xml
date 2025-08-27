@@ -17,7 +17,58 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-25T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-27T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+        <title>AdamW: Adam with Decoupled Weight Decay</title>
+        <published>2025-08-27T00:00:00+00:00</published>
+        <updated>2025-08-27T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/blog-adamw/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/blog-adamw/</id>
+        
+            <content type="html">&lt;p&gt;AdamW 是对 Adam 的改进版，Adam 在处理 Weight Decay 时存在一些问题，而 AdamW 正解决了该问题。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;l2-regularization-yu-weight-decay&quot;&gt;L2 Regularization 与 Weight Decay&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;L2 Regularization 的定义&lt;&#x2F;strong&gt;：给定原始损失函数 $f$，使用 L2 Regularization 的优化器&lt;u&gt;修改了损失函数&lt;&#x2F;u&gt;为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+f_{\text{total}} (\theta) = f(\theta) + \frac{\lambda}{2}\|\theta\|_2^2.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $\theta$ 表示模型中的权重参数（一般不包含偏置项 biases），$\|\theta\|_2^2$ 是 $\theta$ 的 L2 范数平方。当我们对其求梯度可以得到其在 SGD 中的更新格式&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\nabla f_{\text{total}}(\theta)=\nabla f(\theta)+\lambda\theta
+\quad \Rightarrow \quad
+\theta_{t+1}=(1-\eta\lambda)\theta_t-\eta \nabla f(\theta).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Weight Decay 的定义&lt;&#x2F;strong&gt;：带 Weight Decay 的优化器&lt;u&gt;修改了梯度更新规则&lt;&#x2F;u&gt;为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+g = \nabla f(\theta) + \lambda \theta,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;同理我们可以得到其在 SGD 中的参数更新格式：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\theta_{t+1}=(1-\eta\lambda)\theta_t-\eta \nabla f(\theta)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;L2 Regularization 与 Weight Decay 的等价性&lt;&#x2F;strong&gt;：从上面的推导可以看出，在 SGD 中 L2 Regularization 与 Weight Decay 是等价的。但是这一结论在 Adam 中并不成立。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;L2 Regularization 与 Weight Decay 的目的&lt;&#x2F;strong&gt;：两个方法的根本目的是为了防止&lt;u&gt;模型参数过大而导致过拟合&lt;&#x2F;u&gt;（因为 L2 Regularization 损失函数中对大参数进行了惩罚），很多时候当模型参数过大时，其在训练数据上能表现得很好，但是在验证&#x2F;测试数据上表现很差。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;L2 Regularization 与 Weight Decay 的区别&lt;&#x2F;strong&gt;：虽然两者在 SGD 中等价，但是对大参数的惩罚的最根本原因是 L2 Regularization 中修改的损失函数。这也为 Adam 中的错误处理埋下了伏笔。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;adam-zhong-de-weight-decay&quot;&gt;Adam 中的 Weight Decay&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Adam 中的 Weight Decay 处理方式&lt;&#x2F;strong&gt;：Adam 中 Weight Decay 的处理放在了梯度的计算上，即&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+g_t \leftarrow \nabla_\theta f_t(\theta_{t-1}) + \lambda \theta_{t-1}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Adam 中 Weight Decay 处理的问题&lt;&#x2F;strong&gt;：Adam with L2 regularization 的最大错误就是&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\text{忽略了修改损失函数和修改更新规则的等价性}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;我们本质上是想要惩罚大参数，也就是实现 L2 Regularization 中的损失函数。而 Adam 延续了 SGD 的定式思维，认为 Weight Decay 中的更新格式就能实现 L2 Regularization 中的损失函数，而事实上 Adam 的自适应机制导致 Weight Decay 的格式被自适应步长所影响，达不到 L2 Regularization 格式的目标。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;blog-adamw&#x2F;assets&#x2F;image-20250827111241-t0nwupm.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;adamw-de-ge-shi&quot;&gt;AdamW 的格式&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;AdamW 的改进&lt;&#x2F;strong&gt;：AdamW 重新实现了原本 L2 Regularization 的目标，将 Weight Decay 从梯度中解耦，放到最后一步计算，从而提高了泛化性。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;blog-adamw&#x2F;assets&#x2F;image-20250827114029-328jm7k.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>Adam: Adaptive Moment Estimation</title>
         <published>2025-08-25T00:00:00+00:00</published>
         <updated>2025-08-25T00:00:00+00:00</updated>
