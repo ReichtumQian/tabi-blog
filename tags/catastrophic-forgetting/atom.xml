@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="https://reichtumqian.pages.dev/feed_style.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh">
+    <tabi:metadata xmlns:tabi="https://github.com/welpo/tabi">
+        <tabi:base_url>https:&#x2F;&#x2F;reichtumqian.pages.dev</tabi:base_url>
+        <tabi:separator>
+            •
+        </tabi:separator>
+        <tabi:about_feeds>This is a web feed, also known as an Atom feed. Subscribe by copying the URL from the address bar into your newsreader</tabi:about_feeds>
+        <tabi:visit_the_site>Visit website</tabi:visit_the_site>
+        <tabi:recent_posts>Recent posts</tabi:recent_posts>
+        <tabi:last_updated_on>Updated on $DATE</tabi:last_updated_on>
+        <tabi:default_theme></tabi:default_theme>
+        <tabi:post_listing_date>date</tabi:post_listing_date>
+        <tabi:current_section>Catastrophic Forgetting</tabi:current_section>
+    </tabi:metadata><title>Reichtum's Blog - Catastrophic Forgetting</title>
+        <subtitle>Reichtum&#x27;s Blog</subtitle>
+    <link href="https://reichtumqian.pages.dev/tags/catastrophic-forgetting/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://reichtumqian.pages.dev/tags/catastrophic-forgetting/" rel="alternate" type="text/html"/>
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-28T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/catastrophic-forgetting/atom.xml</id><entry xml:lang="zh">
+        <title>论文阅读-Recall and Learn Fine Tuning with Less Forgetting</title>
+        <published>2025-08-28T00:00:00+00:00</published>
+        <updated>2025-08-28T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/reading-recall-and-learn-fine-tuning-with-less-forgetting/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/reading-recall-and-learn-fine-tuning-with-less-forgetting/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2004.12651&quot;&gt;[2004.12651] Recall and Learn: Fine-tuning Deep Pretrained Language Models with Less Forgetting&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Sequential Transfer Learning&lt;&#x2F;strong&gt;: Pretrain a language model on large-scale unlabeled data and then adapt it to downstream tasks. The adaptation step is usually conducted in two manners: &lt;u&gt;fine-tuning&lt;&#x2F;u&gt; or &lt;u&gt;freezing pretrained weights&lt;&#x2F;u&gt; (e.g., train an additional classification head).&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Catastrophic Forgetting&lt;&#x2F;strong&gt;: Such a sequential transfer learning paradigm often confronts the catastrophic forgetting problem, where a model forgets previously learned knowledge and overfits to target domains.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Multi-task Learning&lt;&#x2F;strong&gt;: Learns multiple tasks simultaneously to avoid catastrophic forgetting.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Elastic Weight Consolidation (EWC): EWC evaluates the importance of each weight by &lt;u&gt;Fisher information matrix&lt;&#x2F;u&gt;, and punish the change on these important weights when adapting on subsequent tasks.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Challenge in LLM Fine-Tuning&lt;&#x2F;strong&gt;: Multi-task learning methods cannot be directly applied to the sequential transferring regime of deep pretrained LMs.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Multi-task learning methods require to use data of pretraining tasks during adaptation.&lt;&#x2F;li&gt;
+&lt;li&gt;We only care about the performance of the downstream task, while multi-task learning also aims to promote performance on pretraining tasks.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;contribution-of-this-work&quot;&gt;Contribution of This Work&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Recall and Learn Mechanism&lt;&#x2F;strong&gt;: We propose a recall and learn mechanism, which adopts the idea of multi-task learning and jointly learns pretraining tasks and downstream tasks.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pretraining Simulation: recall the knowledge from pretraining tasks &lt;u&gt;without data&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Objective Shifting: focus the learning on downstream tasks gradually.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Recall Adam (RECADAM)&lt;&#x2F;strong&gt; : We provide RECADAM to integrate the recall and learn mechanism into Adam optimizer.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;methodology&quot;&gt;Methodology&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Pretraining Simulation&lt;&#x2F;strong&gt;: We introduce Pretraining Simulation to approximate the optimization objective of source tasks as a quadratic penalty. The learning objective on the source tasks $\text{Loss}_S$ is approximately&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\text{Loss}_S \approx \frac{1}{2}\gamma \sum_i (\theta_i - \theta_i^\ast)^2,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\theta^\ast$ is the pretrained parameter, and $\gamma$ is a constant.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Objective Shifting&lt;&#x2F;strong&gt;: We introduce Objective Shifting to allow the objective function to gradually shift to $\text{Loss}_T$ with the annealing coefficient. The loss function with annealing coefficient is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\text{Loss} = \lambda(t) \text{Loss}_T + (1 - \lambda(t)) \text{Loss}_S.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Specifically, $\lambda(t)$ is calculated as the sigmoid annealing function:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\lambda(t)=\frac{1}{1+\exp(-k\cdot(t-t_0))}.
+$$&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250828151221-bcbjoaf.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;At the beginning of the training process, the model mainly focuses on pretraining tasks. As training proceeds, the model gradually focuses on target tasks.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;p&gt;&lt;strong&gt;RecAdam Optimizer&lt;&#x2F;strong&gt;: We introduce RecAdam to integrate the quadratic penalty (Pretraining Simulation) and annealing coefficient (Objective Shifting). The difference between Adam and RecAdam lies in decoupling the quadratic penalty and annealing coefficient in Adam optimizer. In vanilla Adam, both the quadratic penalty and annealing coefficient would be adapted by the gradient update rules.&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250828152052-woujadl.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;The comparison between Adam and RecAdam, where SetScheduleMultiplier(t) refers to the preceduer (e.g., warm-up technique) to get the scaling factor of the step size.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;experiments&quot;&gt;Experiments&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Set up&lt;&#x2F;strong&gt;​&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Model&lt;&#x2F;strong&gt;: BERT and ALBERT;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Data&lt;&#x2F;strong&gt;: General Language Understanding Evaluation (GLUE), it includes 9 tasks.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Implementation&lt;&#x2F;strong&gt;: Our methods use &lt;u&gt;random initialization&lt;&#x2F;u&gt; (do not load the pretrained paramters) while vanilla fine-tuning initializes the fine-tuning model with pretrained parameters.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Hyper-Parameters&lt;&#x2F;strong&gt;: We set $\gamma$ to $5000$, select the best $t_0$ and $k$ in $\{100, 250, 500, 1000\}$ and $\{0.05, 0.1, 0.2, 0.5, 1\}$ respectively for the annealing coefficient $\lambda(t)$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Results on BERT-Base&lt;&#x2F;strong&gt;: We outperform the vanilla fine-tuning method on $7$ out of $8$ tasks, especially on the tasks with smaller training data (&amp;lt;10k). It is interesting to find that compared to the median results with BERT-large model, we can also achieve better results on more than half of the tasks.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Results on ALBERT-xxlarge&lt;&#x2F;strong&gt;: We outperform the vanilla fine-tuning method on 5 out of 8 tasks of the GLUE benchmark.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;reading-recall-and-learn-fine-tuning-with-less-forgetting&#x2F;assets&#x2F;image-20250828153601-zdnf97z.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Initialization Analysis&lt;&#x2F;strong&gt;: RECADAM, with both initialization strategies, can outperform the vanilla fine-tuning method on all the four tasks. Random initialization would be our choice because the model would benefit from a larger parameter search space.&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250828155549-c5cefn1.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Comparison of different model initialization strategies: pre-trained initialization (PI) and Random Initialization (RI). We report median over 5 runs.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;
+&lt;p&gt;&lt;strong&gt;Forgetting Analysis&lt;&#x2F;strong&gt;: The hyper-parameter $k$ controls the rate of the objective shifting&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Target Loss: With larger k, the model converges quickly on the target task.&lt;&#x2F;li&gt;
+&lt;li&gt;Source Loss: We measure the pre-trained knowledge forgetting by the Euclidean distance between $\theta_0$ and $\theta$. At the very early stage, the distance drops sharply because of the random initialization and pre-trained knowledge recalling. As the objective rate $k$ decreases, we find that the model can achieve less forgetting at the end of the fine-tuning.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250828155928-bpiioys.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Learning curves with different k values: &lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry>
+</feed>
