@@ -17,7 +17,92 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/optimal-control/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/optimal-control/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-22T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/optimal-control/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-30T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/optimal-control/atom.xml</id><entry xml:lang="zh">
+        <title>Method of Successive Approximations 通用格式</title>
+        <published>2025-08-30T00:00:00+00:00</published>
+        <updated>2025-08-30T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/blog-method-of-successive-approximations-tong-yong-ge-shi/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/blog-method-of-successive-approximations-tong-yong-ge-shi/</id>
+        
+            <content type="html">&lt;p&gt;前面阅读学习了 MSA 算法求解 Optimal Control 问题，但是 MSA 的具体格式是基于神经网络结构的，本次总结了对于更加一般的 Optimal Control 问题，如何使用 MSA 进行求解。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;optimal-control-wen-ti-miao-shu&quot;&gt;Optimal Control 问题描述&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Optimal Control 问题&lt;&#x2F;strong&gt;：这里我们考虑动力系统&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\dot{x}(t) = f(t, x(t), u(t)),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $t \in [t_0, t_f]$ 是时间，$x(t) \in \mathbb{R}^n$ 是状态向量 state vector，$u(t) \in \mathcal{U} \subset \mathbb{R}^m$ 是控制向量，初值条件 $x(t_0) = x_0$，不考虑终值条件（如果有的话 Co-State Equation 的终值条件会有点儿不同）。Cost Functional 为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+J[u(\cdot)] = \phi(t_f, x(t_f)) + \int_{t_0}^{t_f} L(t, x(t), u(t))\mathrm{d}t.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $\phi(t_f, x(t_f))$ 是 terminal cost，$L(t, x(t), u(t))$ 是 running cost。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;PMP 格式&lt;&#x2F;strong&gt;：考虑 Hamiltonian 函数：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+H(t,x(t),p(t),u(t)):=L(t,x(t),u(t))+p(t)^\top f(t,x(t),u(t))
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $p(t)$ 是 co-state vector。PMP 必要条件包含：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;State Equation：如下方程满足初值条件 $x^\ast(t_0) = x_0$​&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\dot{x}^*(t)=\nabla_pH(t,x^*(t),p^*(t),u^*(t))=f(t,x^*(t),u^*(t))
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Co-State Equation：如下方程满足终值条件&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\dot{p}^*(t)=-\nabla_xH(t,x^*(t),p^*(t),u^*(t))=-\left(\nabla_xL+(\nabla_xf)^\top p^*(t)\right)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+p^*(t_f)=\nabla_x\phi(t_f,x^*(t_f))
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Optimality Condition：&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+u^*(t)=\arg\min_{u\in \mathcal{U}}H(t,x^*(t),p^*(t),u)
+$$&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;tong-yong-msa-suan-fa&quot;&gt;通用 MSA 算法&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;初始化：给定初始控制函数 $u^{(0)}(t)$，设定迭代次数 $K$，初始化计数器 $k = 0$&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;求解 State Equation：给定当前控制函数 $u^{(k)}(t)$，从 $t_0$ 到 $t_f$ 正向求解 state equation&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\dot{x}^{(k)}(t)=f(t,x^{(k)}(t),u^{(k)}(t)), \quad x^{(k)}(t_0) = x_0.
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;求解 Co-State Equation：利用 $x^{(k)}(t)$ 和控制 $u^{(k)}(t)$，从 $t_f$ 到 $t_0$ 反向计算 co-state equation&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\dot{p}^{(k)}(t)=-\nabla_xL(t,x^{(k)}(t),u^{(k)}(t))-\left[\nabla_xf(t,x^{(k)}(t),u^{(k)}(t))\right]^Tp^{(k)}(t),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+p^{(k)}(t_f)=\nabla_x\phi(t_f,x^{(k)}(t_f)).
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;更新控制函数：利用 $x^{(k)}(t)$ 和 $p^{(k)}(t)$ 更新 $u^{(k+1)}(t)$，对于每个时间点 $t \in [t_0, t_f]$，计算&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+u^{(k+1)}(t)=\arg\min_{u\in \mathcal{U}}H(t,x^{(k)}(t),p^{(k)}(t),u)
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;设置 $k = k+1$ 并且反复上述三步，直到达到迭代次数上限 $K$ 或者 $u^{(k)}(t)$ 的变化足够小：&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\int_{t_0}^{t_f}||u^{(k+1)}(t)-u^{(k)}(t)||^2dt&amp;lt;\epsilon.
+$$&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>论文阅读：Method of Successive Approximations</title>
         <published>2025-08-22T00:00:00+00:00</published>
         <updated>2025-08-22T00:00:00+00:00</updated>
