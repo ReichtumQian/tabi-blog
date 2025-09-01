@@ -17,7 +17,84 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/statistics/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/statistics/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-08-21T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/statistics/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-01T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/statistics/atom.xml</id><entry xml:lang="zh">
+        <title>先验、后验概率、贝叶斯公式</title>
+        <published>2025-09-01T00:00:00+00:00</published>
+        <updated>2025-09-01T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/blog-xian-yan-hou-yan-gai-lu-bei-xie-si-gong-shi/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/blog-xian-yan-hou-yan-gai-lu-bei-xie-si-gong-shi/</id>
+        
+            <content type="html">&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;xian-yan-hou-yan-de-ding-yi&quot;&gt;先验、后验的定义&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;先验概率 Prior Probability&lt;&#x2F;strong&gt;：假设我们观测到数据 $D$，其由事物背后看不见的性质（参数 $\theta$）控制。&lt;em&gt;先验概率&lt;&#x2F;em&gt;指的是在未观测任何数据前，我们对一个参数 $\theta$ 的信念（表现为概率）&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;以抛硬币为例，我们让 $\theta$ 表示&lt;u&gt;该硬币朝上的概率&lt;&#x2F;u&gt;（这个是硬币本身的性质，类似于神经网络参数）。我们在没抛任何一枚硬币前，若我们认为该硬币是均匀的概率是 $80%$​，则我们的先验表达为：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta = 0.5) = 0.8,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;即对于事件&lt;u&gt;硬币朝上概率的概率为 &lt;&#x2F;u&gt;​&lt;u&gt;$50%$&lt;&#x2F;u&gt;（也就是均匀的）的信任度为 $80%$​。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;似然 Likelihood&lt;&#x2F;strong&gt;：似然表示我们假设某个参数 $\theta$ 为真的情况下，能观测到数据 $D$ 的概率&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(D | \theta).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;例如我们假设硬币是均匀的，即 $\theta = 0.5$，我们观察到抛 $10$ 次出现 $7$ 次正面的现象 $D$ 的概率为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(D | \theta = 0.5).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;后验概率 Posterior Probability&lt;&#x2F;strong&gt;：后验概率表示观测到新数据 $D$ 后，我们对参数 $\theta$ 更新后的信念（从先验的主观臆断到后验的数据观测）&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta | D).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;证据 Evidence &#x2F; 边缘似然 Marginal Likelihood&lt;&#x2F;strong&gt;：对于数据 $D$，我们定义其在所有可能的 $\theta$ 下出现的总概率为 &lt;em&gt;Evidence&lt;&#x2F;em&gt;。在离散情况下&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(D) = \sum P(D|\theta_i) P(\theta_i)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;在连续情况下&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(D) = \int P(D|\theta) P(\theta) \mathrm{d}\theta.
+$$&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;bei-xie-si-gong-shi&quot;&gt;贝叶斯公式&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;贝叶斯公式&lt;&#x2F;strong&gt;：贝叶斯公式将先验概率、似然、后验概率联系在了一起：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta|D)=\frac{P(D|\theta)\cdot P(\theta)}{P(D)}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;左侧 $P(\theta | D)$ 是后验概率，$P(D|\theta)$ 是似然，$P(\theta)$ 是先验概率，$P(D)$ 是边缘似然。在实际计算中，$P(D)$ 非常难计算，因此我们一般认为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta|D)\propto P(D|\theta)\cdot P(\theta).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;投硬币例子&lt;&#x2F;strong&gt;：例如我们对硬币的公平性有所怀疑，提出了两个假设 $\theta_1 = 0.5$ 和 $\theta_2 = 0.8$（表示正面概率）。在没有证据前，我们认为它们都有可能，即&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta = 0.5) = 0.5, \quad P(\theta = 0.8) = 0.5.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;然后我们观测到数据 $D$ 为&lt;u&gt;10次抛掷，7次正面&lt;&#x2F;u&gt;。如果 $\theta = 0.5$，那么观测到 $D$ 的概率为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(D|\theta_1=0.5)=C(10,7)\cdot(0.5)^7(0.5)^3\approx0.117
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;如果 $\theta = 0.8$，那么观测到 $D$ 的概率为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(D|\theta_2=0.8)=C(10,7)\cdot(0.8)^7(0.2)^3\approx0.201
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;因此我们可以得到后验概率&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta_1=0.5|D)\propto0.117\times0.5=0.0585
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta_2=0.8|D)\propto0.201\times0.5=0.1005
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;由于只有这两种情况，我们不妨做个归一化：$P(D) = 0.0585 + 0.1005 = 0.159$，得到&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+P(\theta_1=0.5|D)=\frac{0.0585}{0.159}\approx0.368, \quad
+P(\theta_2=0.8|D)=\frac{0.1005}{0.159}\approx0.632.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>KL 散度、交叉熵与对数似然</title>
         <published>2025-08-21T00:00:00+00:00</published>
         <updated>2025-08-21T00:00:00+00:00</updated>
