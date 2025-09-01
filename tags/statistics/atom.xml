@@ -95,6 +95,90 @@ $$&lt;&#x2F;p&gt;
 &lt;p&gt;‍&lt;&#x2F;p&gt;
 </content>
         </entry><entry xml:lang="zh">
+        <title>Fisher 矩阵与弹性权重巩固 Elastic Weight Consolidation, EWC</title>
+        <published>2025-09-01T00:00:00+00:00</published>
+        <updated>2025-09-01T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/fisher-ju-zhen-yu-dan-xing-quan-zhong-gong-gu-elastic-weight-consolidation-ewc/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/fisher-ju-zhen-yu-dan-xing-quan-zhong-gong-gu-elastic-weight-consolidation-ewc/</id>
+        
+            <content type="html">&lt;p&gt;‍&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;yu-bei-zhi-shi-si-ran-han-shu&quot;&gt;预备知识：似然函数&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;似然函数&lt;&#x2F;strong&gt;：似然函数 $L(\theta | D)$ 表示在参数为 $\theta$ 的模型下，观测到数据 $D$ 的概率，即&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+L(\theta|D)=p(D|\theta)=\prod_{i=1}^Np(x_i|\theta).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;对数似然&lt;&#x2F;strong&gt;：由于似然函数的计算是乘法，有各种各样的问题。我们希望将其转换为加法或者减法，而取对数是一种很自然的想法&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{L}(\theta|D)=\log L(\theta|D)=\sum_{i=1}^N\log p(x_i|\theta).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;最大化似然估计 Maximum Likelihood Estimation, MLE&lt;&#x2F;strong&gt;：如果我们能够调整 $\theta$，那么我们肯定希望在 $\theta$ 下观测到 $D$ 的概率越高越好，也就是最大化似然函数&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\theta_{MLE}=\arg\max_\theta\mathcal{L}(\theta|D).
+$$&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;yu-bei-zhi-shi-score-han-shu&quot;&gt;预备知识：Score 函数&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Score 函数的定义&lt;&#x2F;strong&gt;：定义 Score 函数为对数似然函数关于 $\theta$ 的梯度，其表示着在&lt;u&gt;当前 &lt;&#x2F;u&gt;​&lt;u&gt;$\theta$&lt;&#x2F;u&gt;​&lt;u&gt; 位置如何调整参数能最快地提高模型对数据的解释能力&lt;&#x2F;u&gt;。&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+s(\theta) := \nabla_\theta \mathcal{L}(\theta|D)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Score 函数的期望&lt;&#x2F;strong&gt;：假设数据 $D$ 是由一个真实的参数 $\theta^\ast$ 生成的，那么 Score 函数在该点的期望为零：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbb{E}_{D\sim p(D|\theta^*)}[s(\theta^*)]=0,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;需要注意的是，这个期望为 $0$ 是一个关于所有可能数据集的&lt;u&gt;理论平均性质&lt;&#x2F;u&gt;。对于我们手中任何一个具体的数据集 $D$，由于采样的随机性，计算出的 $s(\theta^*)$ 的值几乎总是不为 $0$ 的。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;fisher-ju-zhen&quot;&gt;Fisher 矩阵&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Fisher 信息矩阵&lt;&#x2F;strong&gt;：Fisher 信息矩阵量化了&lt;u&gt;数据 &lt;&#x2F;u&gt;​&lt;u&gt;$D$&lt;&#x2F;u&gt;​&lt;u&gt; 中包含了多少模型参数 &lt;&#x2F;u&gt;​&lt;u&gt;$\theta$&lt;&#x2F;u&gt;​&lt;u&gt; 的信息&lt;&#x2F;u&gt;，其有两种等价的定义。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;定义 1. Score 函数的方差&lt;&#x2F;strong&gt;：定义 Fisher 信息矩阵为 Score 函数的协方差矩阵&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+F(\theta)=\mathbb{E}_{x\sim p(x|\theta)}[s(\theta)s(\theta)^\top]
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;在实际问题中，对于每个样本的梯度向量 $s_k(\theta)$，我们通过以下公式计算 Fisher 信息矩阵&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\hat{F}(\theta)=\frac{1}{N}\sum_{k=1}^Ns_k(\theta)s_k(\theta)^\top
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;定义 2. 对数似然函数 Hessian 矩阵的负期望&lt;&#x2F;strong&gt;：我们也可以用对数似然函数的 Hessian 矩阵的负期望来定义 Fisher 矩阵&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+F(\theta)=-\mathbb{E}_{x\sim p(x|\theta)}[\nabla_{\theta}^{2}\mathcal{L}(\theta|D)]
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;在实际计算中，对数据集中每个样本 $x_k$ 计算对数似然的 Hessian 矩阵 $\nabla_\theta^2\mathcal{L}(\theta|x_k)=\nabla_\theta^2\log p(x_k|\theta)$，取负号后求和：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\hat{F}(\theta)=-\frac{1}{N}\sum_{k=1}^{N}\nabla_{\theta}^{2}\log p(x_{k}|\theta)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Fisher 矩阵元素含义&lt;&#x2F;strong&gt;：Fisher 矩阵的对角元素 $F_{ii}$ 衡量了数据中关于某个参数 $\theta_i$ 的信息量，$F_{ii}$ 越大说明 $\theta_i$ 对模型越重要。非对角元素 $F_{ij}$ 表示了不同参数 $\theta_i$ 和 $\theta_j$ 估计值之间的相关性&#x2F;耦合度。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;dan-xing-quan-zhong-gong-gu-elastic-weight-consolidation-ewc&quot;&gt;弹性权重巩固 Elastic Weight Consolidation, EWC&lt;&#x2F;h2&gt;
+&lt;p&gt;EWC 是一种持续学习算法，其目标是在学习新任务（任务B）时，减缓对旧任务（任务A）知识的遗忘。这里介绍其数学基础与基本想法。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;EWC 核心思想&lt;&#x2F;strong&gt;：对于旧任务（任务A）中越重要的参数，在学习新任务（任务B）时就越要&lt;u&gt;限制它的改动&lt;&#x2F;u&gt;。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;EWC 损失函数&lt;&#x2F;strong&gt;：假设已经完成了任务 A 的训练得到了最优参数 $\theta_A^\ast$。现在要学习任务 B，则 EWC 的损失函数表示为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+L(\theta)=L_B(\theta)+\frac{\lambda}{2}\sum_iF_i(\theta_i-\theta_{A,i}^*)^2,
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $L_B(\theta)$ 是任务 B 的标准损失函数，$\frac{\lambda}{2}\sum_iF_i(\theta_i-\theta_{A,i}^*)^2$ 是 EWC 增加的&lt;u&gt;正则化惩罚项&lt;&#x2F;u&gt;，$\lambda$ 是正则化参数，$(\theta_i-\theta_{A,i}^*)^2$ 是当前参数 $\theta_i$ 与任务 A 最优参数 $\theta_{A,i}^\ast$ 的二次距离，$F_i$ 是&lt;u&gt;在 &lt;&#x2F;u&gt;​&lt;u&gt;$\theta_{A}^\ast$&lt;&#x2F;u&gt;​&lt;u&gt; 处的 Fisher 矩阵&lt;&#x2F;u&gt;的对角元素，充当了&lt;u&gt;重要性权重&lt;&#x2F;u&gt;。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果参数 $\theta_i$ 对任务 A 很重要（$F_i$ 很大），那么对它的任何改动 $(\theta_i - \theta_{A,i})^2$ 都会被放大，从而产生巨大的惩罚，迫使模型不要轻易改动它。&lt;&#x2F;li&gt;
+&lt;li&gt;如果参数 $\theta_i$ 对任务 A 不重要（$F_i$ 很小），惩罚就小，模型可以自由调整它来适应任务 $B$。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;一些疑问和注意点&lt;&#x2F;strong&gt;：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;为什么只用对角元素：由于完整的 Fisher 矩阵过于庞大，EWC 中&lt;u&gt;只使用了 Fisher 矩阵的对角元素&lt;&#x2F;u&gt;以表示重要性，忽略了参数之间的相关性。&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Fisher 矩阵是固定的吗：注意 EWC 使用的 Fisher 矩阵是 $\theta_A^\ast$ 处的，而&lt;u&gt;非每次参数更新时更新&lt;&#x2F;u&gt;的，这样能准确捕捉对 A 任务重要的参数。&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;为什么用 Fisher 矩阵对角而非 Score 函数分量：理想情况下 $\theta_A^\ast$ 处的 Score 函数为 $0$（极值点），而 Fisher 矩阵衡量了&lt;u&gt;不同样本对某个参数的需求&lt;&#x2F;u&gt;，如果 $F_i$ 很大，则稍微一改动，便会影响多个样本的拟合结果。&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>KL 散度、交叉熵与对数似然</title>
         <published>2025-08-21T00:00:00+00:00</published>
         <updated>2025-08-21T00:00:00+00:00</updated>
