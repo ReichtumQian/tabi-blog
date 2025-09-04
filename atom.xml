@@ -17,7 +17,73 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-01T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-04T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+        <title>拉格朗日乘子法</title>
+        <published>2025-09-04T00:00:00+00:00</published>
+        <updated>2025-09-04T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/la-ge-lang-ri-cheng-zi-fa/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/la-ge-lang-ri-cheng-zi-fa/</id>
+        
+            <content type="html">&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;wen-ti-miao-shu&quot;&gt;问题描述&lt;&#x2F;h2&gt;
+&lt;p&gt;拉格朗日乘子法（Method of Lagrange multiplier）用于解决&lt;u&gt;等式约束的优化问题&lt;&#x2F;u&gt;（Equality-Constrained Optimization）。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;等式约束的优化算法&lt;&#x2F;strong&gt;：给定目标函数 $f: \mathbb{R}^m \to \mathbb{R}$ 和等式约束条件 $\mathbf{g}(\mathbf{x}) = \mathbf{c}$，其中 $\mathbf{x} \in \mathbb{R}^n$，$\mathbf{c} \in \mathbb{R}^m$​。问题是找到 $\mathbf{x}^\ast$ 满足&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{x}^\ast = \arg\min_\mathbf{x} f(\mathbf{x}), \quad \operatorname{subject~to} \quad
+\mathbf{g}(\mathbf{x}) = \mathbf{c}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $\mathbf{g}(\mathbf{x}^\ast) = \mathbf{c}$ 为多个等式约束条件 $g_1(\mathbf{x}^\ast) = c_1$，$g_2(\mathbf{x}^\ast) = c_2$ 等。&lt;&#x2F;p&gt;
+&lt;p&gt;注：为了简单起见，我们先考虑一个限制条件 $g(\mathbf{x}) = c$。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;he-xin-si-xiang&quot;&gt;核心思想&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;等高线 Level Sets&lt;&#x2F;strong&gt;：对于 $d \in \mathbb{R}$，集合 $\{\mathbf{x}: f(\mathbf{x}) = d\}$ 构成了 $f$ 的一条等高线。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;梯度与等高线正交：函数在某一点的梯度 $\nabla f(\mathbf{x})$ 指向函数值增长最快的方向，且与该点的等高线&lt;strong&gt;正交&lt;&#x2F;strong&gt;。&lt;&#x2F;li&gt;
+&lt;li&gt;约束曲面是等高线：约束 $g(\mathbf{x}) = c$ 本身也定义了一个曲面。由于其是一个等式，其可以被视作等高线，因此 $\nabla g(\mathbf{x})$ 与该曲面正交。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;拉格朗日乘子法的直观理解&lt;&#x2F;strong&gt;：假设我们沿着约束曲面 $g(\mathbf{x}) = c$ 行走，寻找 $f(\mathbf{x})$ 的最高点。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果我们能沿着约束曲面 $g(\mathbf{x}) = c$ 移动优化 $f(\mathbf{x})$，那我们肯定还没到最优点。&lt;&#x2F;li&gt;
+&lt;li&gt;当我们达到 $\mathbf{x}^\ast$ 时，我们无法再沿着 $g(\mathbf{x}) = c$ 优化 $f(\mathbf{x})$，因此 $\mathbf{x}^\ast$ 处约束曲线的方向与 $f(\mathbf{x})$ 的等高线方向是相切的。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;核心思想&lt;&#x2F;strong&gt;：拉格朗日乘子法的核心思想为&lt;u&gt;在最优点 &lt;&#x2F;u&gt;​&lt;u&gt;$\mathbf{x}^\ast$&lt;&#x2F;u&gt;​&lt;u&gt;处，目标函数 &lt;&#x2F;u&gt;​&lt;u&gt;$f(\mathbf{x})$&lt;&#x2F;u&gt;​&lt;u&gt; 的等高线&#x2F;面与约束条件 &lt;&#x2F;u&gt;​&lt;u&gt;$g(\mathbf{x}) = c$&lt;&#x2F;u&gt;​&lt;u&gt; 的曲线&#x2F;面相切&lt;&#x2F;u&gt;。用数学语言来说即两个曲面 $f(\mathbf{x}) = f(\mathbf{x}^\ast)$ 和 $g(\mathbf{x}) = c$ 相切，那么它们的法向量必然是平行的，也就是&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\nabla f(\mathbf{x}^*)=-\lambda\nabla g(\mathbf{x}^*)
+\quad \Rightarrow \quad
+\nabla f(\mathbf{x}^*)+\lambda\nabla g(\mathbf{x}^*)=\mathbf{0}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中 $\lambda$ 是一个待定系数，表示两个向量的模长比。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;la-ge-lang-ri-cheng-zi-fa&quot;&gt;拉格朗日乘子法&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;拉格朗日乘子法叙述&lt;&#x2F;strong&gt;：上述思想引出了一个巧妙的解决方案，我们引入一个辅助函数，称为&lt;em&gt;拉格朗日函数（Lagrangian Function）&lt;&#x2F;em&gt; ：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+L(\mathbf{x},\lambda)=f(\mathbf{x})+\lambda(g(\mathbf{x})-c)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;这样我们就把前面的有约束问题&lt;u&gt;转换为了对拉格朗日函数 &lt;&#x2F;u&gt;​&lt;u&gt;$L(\mathbf{x}, \lambda)$&lt;&#x2F;u&gt;​&lt;u&gt; 的无约束优化问题&lt;&#x2F;u&gt;：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\begin{cases}
+\nabla_\mathbf{x}L(\mathbf{x},\lambda)=\nabla f(\mathbf{x})+\lambda\nabla g(\mathbf{x})=\mathbf{0} \\
+\frac{\partial L}{\partial\lambda}=g(\mathbf{x})-c=0
+\end{cases}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;其中第一个式子是前一节中导出的条件，第二个式子施加了原始的约束条件 $g(\mathbf{x}) = c$。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;多等式约束拉格朗日乘子法&lt;&#x2F;strong&gt;：对于多个等式约束的优化问题，我们定义拉格朗日函数为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+L(\mathbf{x},\boldsymbol{\lambda})=f(\mathbf{x})+\sum_{i=1}^m\lambda_i(g_i(\mathbf{x})-c_i).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;对应的无约束优化问题为：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\begin{cases}
+\nabla_\mathbf{x}L(\mathbf{x},\boldsymbol{\lambda})=\nabla f(\mathbf{x})+\sum_{i=1}^m\lambda_i\nabla g_i(\mathbf{x})=\mathbf{0} \\
+\frac{\partial L}{\partial\lambda_i}=g_i(\mathbf{x})-c_i=0, \quad i = 1,2,\cdots, m
+\end{cases}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>先验、后验概率、贝叶斯公式</title>
         <published>2025-09-01T00:00:00+00:00</published>
         <updated>2025-09-01T00:00:00+00:00</updated>
