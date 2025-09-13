@@ -18,6 +18,189 @@
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/" rel="alternate" type="text/html"/>
     <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-13T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+        <title>论文阅读-Benchmarking Optimizers for Large Language Model Pretraining</title>
+        <published>2025-09-13T00:00:00+00:00</published>
+        <updated>2025-09-13T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/lun-wen-yue-du-benchmarking-optimizers-for-large-language-model-pretraining-md/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/lun-wen-yue-du-benchmarking-optimizers-for-large-language-model-pretraining-md/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2509.01440&quot;&gt;[2509.01440] Benchmarking Optimizers for Large Language Model Pretraining&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Chinchilla Scaling Law&lt;&#x2F;strong&gt;: The optimal amount of training data for a given model size that yields the best performance under a fixed computational budget. To be more specific, we &lt;u&gt;need around 20 text tokens per parameter&lt;&#x2F;u&gt; (see &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;pdf&#x2F;2203.15556&quot;&gt;2203.15556&lt;&#x2F;a&gt;)&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Overview&lt;&#x2F;strong&gt;: We discuss the algorithms according to their logical grouping:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Adam-like methods: &lt;code&gt;AdamW&lt;&#x2F;code&gt;​, &lt;code&gt;ADOPT&lt;&#x2F;code&gt;​, &lt;code&gt;AdEMAMix&lt;&#x2F;code&gt;​&lt;&#x2F;li&gt;
+&lt;li&gt;Sign-based methods: &lt;code&gt;Lion&lt;&#x2F;code&gt;​, &lt;code&gt;Signum&lt;&#x2F;code&gt;​&lt;&#x2F;li&gt;
+&lt;li&gt;Approximate second-order optimizers: &lt;code&gt;Muon&lt;&#x2F;code&gt;​, &lt;code&gt;SOAP&lt;&#x2F;code&gt;​, &lt;code&gt;Sophia&lt;&#x2F;code&gt;​&lt;&#x2F;li&gt;
+&lt;li&gt;Learning rate&#x2F; scheduler-free learning algorithms: &lt;code&gt;Schedule-Free AdamW&lt;&#x2F;code&gt;​, &lt;code&gt;Prodigy&lt;&#x2F;code&gt;​&lt;&#x2F;li&gt;
+&lt;li&gt;MARS methods: &lt;code&gt;MARS&lt;&#x2F;code&gt;​&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;results-at-small-scale-124m-models&quot;&gt;Results at Small Scale: 124M Models&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Results with Small and Large Batches&lt;&#x2F;strong&gt; and &lt;strong&gt;Stability across Training Horizons&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250912181322-uddtshy.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Comparing optimizers for training a 124M parameter LLM: (a) &amp;amp;quot;small&amp;amp;quot; batch size (b) &amp;amp;quot;large&amp;amp;quot; batch size.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250908175428-l9hiovd.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Ranking of optimizers for 124M models with &amp;amp;quot;small&amp;amp;quot; and &amp;amp;quot;large&amp;amp;quot; batch sizes.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway (Batch Size)&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;AdEMAMix&lt;&#x2F;code&gt;​ consistently achieves state-of-the-art performance and robust scaling with training duration.&lt;&#x2F;li&gt;
+&lt;li&gt;Sign-based methods (&lt;code&gt;Signum&lt;&#x2F;code&gt;​, &lt;code&gt;Lion&lt;&#x2F;code&gt;​) and &lt;code&gt;MARS&lt;&#x2F;code&gt;​ greatly benefit from the &lt;u&gt;increased batch size&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Sophia&lt;&#x2F;code&gt;​ diverges in small-batch setting, when trained beyond the Chinchilla optimal horizon, even with sufficiently small learning rate;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;SOAP&lt;&#x2F;code&gt;​ show a consistent performance in both settings.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway (Stability)&lt;&#x2F;strong&gt; : Once optimizers are properly re-tuned for the maximal length of training considered, doubling of number of iterations does not affect the ranking of methods.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Increasing the Batch Size Further&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250912182035-3u788qq.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Scaling batch size vs. scaling the number of iterations&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;: Many methods, especially &lt;code&gt;MARS&lt;&#x2F;code&gt;​, &lt;code&gt;Prodigy&lt;&#x2F;code&gt;​, and &lt;code&gt;sign-based&lt;&#x2F;code&gt;​ ones, can outperform &lt;code&gt;AdamW&lt;&#x2F;code&gt;​ while trained on a sufficiently large batches.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Weight Decay Ablation&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250912182611-33p1mpd.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Larger weight decay achieves significantly better results when training on fewer tokens: (a) AdamW, Signum, Lion with large weight decay outperform baseline AdamW with weight decay of 0.1 for short training duration. (b) the setting without weight decay is suboptimal. (c) Smaller weight decay leads to larger L2 norm of the model parameter.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250912182642-ieebifg.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Importance of weight decay for Muon. (1) D-Muon uses a weight decay for all parameters, (2) Muon uses weight decay only on embeddings, scalar parameters, and the final layer. We can see that D-Muon greatly outperforms the basic Muon.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The use of weight decay (particularly a large weight decay term 0.5 and above), can significantly impact the final loss and optimizer behavior.&lt;&#x2F;li&gt;
+&lt;li&gt;The setting of weight decay to be $0$ is suboptimal.&lt;&#x2F;li&gt;
+&lt;li&gt;For extended training horizons, non-zero weight of $0.1$ proves to be a robust option.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Learning Rate Sensitivity&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250912194544-c9ym1ai.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Optimal learning rate stability across optimizers. The optimal learning rate determined during tuning on 2.1B tokens remains consistent after a learning rate sweep on 16.8B tokens for most optimizers.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;For most optimizer, the learning rate $\gamma_{\max}$ selected near the Chinchilla optimal horizon transfers smoothly to $8 \times$longer run.&lt;&#x2F;li&gt;
+&lt;li&gt;Sign-based methods and &lt;code&gt;Sophia&lt;&#x2F;code&gt;​ diverge with $\gamma_{\max} = 2e^{-3}$.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;MARS&lt;&#x2F;code&gt;​ demonstrates a very consistent performance across $\gamma$ sweep.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Warmup Ablation&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250912195833-rxrm1vz.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Warmup ablation: sign-based optimizers, Sophia and SF-AdamW benefit from the increased warmup.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;: We reveal that the warmup duration is optimizer-dependent and should be tuned: for &lt;code&gt;SF-AdamW&lt;&#x2F;code&gt;​, &lt;code&gt;Sophia&lt;&#x2F;code&gt;​, and &lt;code&gt;Signum&lt;&#x2F;code&gt;​, longer warmup results in improved final performance.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Warmup Types of WSD, cosine, and linear&lt;&#x2F;strong&gt; **$\gamma$**​ &lt;strong&gt;-scheduler&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913155616-x3m2l3m.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Comparisons between cosine, WSD, and the linear schedulers.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913160100-ljc3uwl.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Gradient norm patterns for different schedulers: (b) the gradient evolution for majority of optimizers resembles the SF-AdamW pattern (a,c) Exceptions are sign-based methods: Signum and Lion.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;: A choice of the learning rate scheduler is also optimizer-related&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;For most methods, the cosine scheduler dominates.&lt;&#x2F;li&gt;
+&lt;li&gt;Linear scheduler outperforms or matches cosine and WSD for sign-based methods, &lt;code&gt;SOAP&lt;&#x2F;code&gt;​ and &lt;code&gt;MARS&lt;&#x2F;code&gt;​.&lt;&#x2F;li&gt;
+&lt;li&gt;WSD appears to be the best option for &lt;code&gt;Muon&lt;&#x2F;code&gt;​&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;results-at-medium-scale-210m-models&quot;&gt;Results at Medium Scale: 210M Models&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Results&lt;&#x2F;strong&gt;​&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913160454-797022m.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Ranking of optimizers for 210M models with the batch size of 256*512 tokens.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913160605-3jwtcqf.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Comparing optimizers for training a 219M parameter LLM.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;We do not observe a much of a change in ranking of optimizers for 210M model, compared to benchmarking on 124M.&lt;&#x2F;li&gt;
+&lt;li&gt;We replicated almost identical hyperparameters for all optimizers, except for the learning rate for sign-based methods (which is more sensitive to the learning rate while scaling the model size)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Decay the learning rate sufficiently&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913161002-rhf7rcr.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Decaying the learning rate down to 0.01 and beyond, instead of only to 0.1&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;: Decaying the learning rate further than $10\%$ of the maximal significantly improves the results. However, for different schedulers, the best final learning rate is different.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;results-at-large-scale-583m-and-720m-parameters&quot;&gt;Results at Large Scale: 583M and 720M Parameters&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Results&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913161558-oyap0pm.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Ranking of optimizers for 720M Llama-based models.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913161416-9a93emu.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Comparing optimizers for training a 720M parameter LLM.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;At larger scale of model and batch size, &lt;code&gt;AdEMAMix&lt;&#x2F;code&gt;​ and &lt;code&gt;MARS&lt;&#x2F;code&gt;​ dominate.&lt;&#x2F;li&gt;
+&lt;li&gt;Despite training with large batches, &lt;code&gt;Signum&lt;&#x2F;code&gt;​ and &lt;code&gt;Lion&lt;&#x2F;code&gt;​ scale poorly.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;D-Muon&lt;&#x2F;code&gt;​ is consistent across all our benchmarking setups.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;&lt;strong&gt;Wall-clock time comparison&lt;&#x2F;strong&gt;​&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913161744-b9b1nwq.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Wall-clock time comparison.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;: Most optimizers exhibit similar wall-time performance, with sign-based methods being slightly faster. &lt;code&gt;SOAP&lt;&#x2F;code&gt;​ is the main exception.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;extension-to-moes&quot;&gt;Extension to MoEs&lt;&#x2F;h2&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913162006-wshll9d.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Ranking optimizers for 520M MoE models with 256*512 batch size.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20250913162059-zjiwg4o.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Comparing optimizers for training a 520M parameter MoE.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Takeaway&lt;&#x2F;strong&gt;: Benchmarking results obtained for dense models transfer to corresponding MoEs.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>Pytorch 中的 Dataset、DataLoader</title>
         <published>2025-09-13T00:00:00+00:00</published>
         <updated>2025-09-13T00:00:00+00:00</updated>
