@@ -132,6 +132,10 @@
         <lastmod>2025-09-11</lastmod>
     </url>
     <url>
+        <loc>https://reichtumqian.pages.dev/blog/pytorch-lightning-peft-shi-xian-lora-wei-diao-shi-li/</loc>
+        <lastmod>2025-09-15</lastmod>
+    </url>
+    <url>
         <loc>https://reichtumqian.pages.dev/blog/pytorch-qiu-dao-cao-zuo-zong-jie/</loc>
         <lastmod>2025-09-07</lastmod>
     </url>
@@ -185,6 +189,9 @@
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/llm/</loc>
+    </url>
+    <url>
+        <loc>https://reichtumqian.pages.dev/tags/lora/</loc>
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/machine-learning/</loc>
