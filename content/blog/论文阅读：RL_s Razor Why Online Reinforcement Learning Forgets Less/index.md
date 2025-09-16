@@ -28,10 +28,12 @@ tags = ["Machine Learning", "Continual Learning", "Fine Tuning"]
 
 **Offline RL**: The agent learns from a <u>fixed, pre-collected dataset of past interactions</u>. It has no ability to explore or gather new data.
 
-> Online 和 On-Policy 的辨析：
+> Online 和 On-Policy 的辨析
 >
 > - Online 决定了经验是如何产生的：是通过与环境的实时互动，而非提前准备好
 > - On-Policy 决定了采集到的经验是如何被使用的，是“用完即弃”（On-Policy），还是“存起来反复用”（Off-Policy）
+>
+> Offline 和 Off-Policy 的辨析：Offiline 一定是 Off-Policy 的，反之不一定
 
 **Previous Approaches to Catastrophic Forgetting**: Previous approaches such as <u>constraining weight updates</u>, <u>preserving learned features</u>, or <u>regularizing shift in output distribution</u> focus on its effects rather than its underlying cause. Some prior work claimed that forgetting can be determined by <u>how much the model's distribution shifts on past tasks</u>, but in practice this is infeasible because the set of prior tasks is vast or even unbounded.
 
@@ -76,20 +78,34 @@ tags = ["Machine Learning", "Continual Learning", "Fine Tuning"]
 
 ![image](assets/image-20250910102102-a77ljmv.png "KL divergence predicts catastrophic forgetting: (1) SFT outperforms RL only when an oracle distribution is used. (2) Forgetting aligns a single curve when plotted against KL divergence. (3) RL improves new-task accuracy with much smaller KL shifts than SFT.")​
 
+- ​`SFT on dist 1`​: All even digits mapped to label 0, all odd digits to label 1.
+- ​`SFT on dist 2`​: Even digits randomly mapped to $\{0, 4\}$, odd digits to $\{1,5\}$.
+- ​`SFT on optimal dist`​: Annotations drawn from the minimum-KL distribution consistent with task correctness. Concretely, for an input image $x$ we compute $\pi_0(\cdot | x) \in \mathbb{R}^{10}$ and the binary indicator vector $R \in \{0,1\}^{10}$ encoding which labels are correct given the digit's parity. The oracle distribution $q^\ast$ is the solution to
+
+$$
+q^*=\arg\min_qD_{\text{KL}}(\pi_0\|q)\quad\text{s.t.}\quad q^\top R=1.
+$$
+
+> 例如给定图片 $2$，因为其是偶数，$R$ 在所有偶数位置为 $1$​，那么上面的向量 `R = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]`​
+
 **On-Policy Methods Lead to Smaller KL Divergence**: Here we consider the loss function of SFT and RL:
+
+- SFT minimizes cross-entropy against a supervision distribution $\pi_\beta$ over a distribution of inputs $\mathcal{D}$​
 
 $$
 {\mathcal{L}}_{\mathrm{SFT}}(\pi)=-\mathbb{E}_{x\sim\mathcal{D},y\sim\pi_{\beta}}[\log\pi(y|x)]
 $$
 
+- Let $A(x,y)$ be an advantage function. RL with policy gradient optimizes
+
 $$
 \mathcal{L}_{\mathrm{RL}}(\pi)=-\mathbb{E}_{x\sim\mathcal{D},y\sim\pi}\left[A(x,y)\log\pi(y|x)\right]
 $$
 
-Here $A(x,y)$ is an advantage function. There are two features that distinguish RL from SFT:
+. There are two features that distinguish RL from SFT:
 
-- Sampling Distribution: While in RL the training was done on outputs drawn from the model’s own distribution, in SFT they come from fixed external annotations.
-- Negative Examples: While sampling from $\pi$, some of the responses will be incorrect. These are usually assigned a negative coefficient $A(x,y)$. This pushes probability mass away from poor outputs.
+- Sampling Distribution: While in RL the training was done on outputs <u>drawn from the model’s own distribution</u>, in SFT they <u>come from fixed external annotations</u>.
+- Negative Examples: While sampling from $\pi$, some of the responses will be incorrect. These are usually assigned a <u>negative coefficient</u> $A(x,y)$. This pushes probability mass away from poor outputs.
 
 Our hypothesis is that one of these two differences is what causes RL's resistance to forgetting. So we perform experiments with four different objectives: "GRPO", "1-0 Reinforce", "SFT", and "SimPO". The results show that <u>the critical factor is the use of on-policy data</u>.
 
@@ -110,11 +126,9 @@ Our hypothesis is that one of these two differences is what causes RL's resistan
 
 We systematically evaluated alternative variables as potential predictors of catastrophic forgetting, grouped into four categories.
 
-**Weight-Level Changes**: Many prior work tried to mitigate forgetting by <u>constraining the change in parameter space</u>. We measured parameter changes under L1, Fisher-weighted L2, and spectral norm metrics. These metrics correlated only weakly with forgetting: large parameter shifts could occur without forgetting, and conversely, forgetting sometimes occurred despite small parameter movement.
+**Weight-Level Changes**: Many prior work tried to mitigate forgetting by <u>constraining the change in parameter space</u>. We measured parameter changes under L1, Fisher-weighted L2, and spectral norm metrics. These metrics correlated only weakly with forgetting: <u>large parameter shifts could occur without forgetting, and conversely, forgetting sometimes occurred despite small parameter movement</u>.
 
-> 一些想法：那 super weight 和 super activation 在这里会有体现吗？
-
-**Representation/Activation-Level Changes**: Some other papers focused on <u>maintaining the previous features</u>. We examined hidden activation shifts (L1 and L2 distances) as proxies for changes in internal representations. Although we found that there is representation drift during training, the curves were distinct between training objectives, meaning that it is not a good predictor.
+**Representation/Activation-Level Changes**: Some other papers focused on <u>maintaining the previous features</u>. We examined hidden activation shifts (L1 and L2 distances) as proxies for changes in internal representations. Although we found that there is representation drift during training, the <u>curves were distinct between training objectives</u> (不同训练方法的【Activation Change-Forgetting】曲线不同), meaning that it is not a good predictor.
 
 ![image](assets/image-20250910105915-bchua9h.png "CKA similarity to the base model during training.")​
 
