@@ -135,6 +135,10 @@
         <loc>https://reichtumqian.pages.dev/blog/page/8/</loc>
     </url>
     <url>
+        <loc>https://reichtumqian.pages.dev/blog/peft-huo-qu-yuan-mo-xing-get-base-model-de-bug/</loc>
+        <lastmod>2025-09-22</lastmod>
+    </url>
+    <url>
         <loc>https://reichtumqian.pages.dev/blog/pytest-vscode-kuai-su-shang-shou/</loc>
         <lastmod>2025-09-11</lastmod>
     </url>
@@ -243,6 +247,9 @@
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/optimization/</loc>
+    </url>
+    <url>
+        <loc>https://reichtumqian.pages.dev/tags/peft-library/</loc>
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/pytest/</loc>
