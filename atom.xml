@@ -18,6 +18,240 @@
     <link href="https://reichtumqian.pages.dev/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev" rel="alternate" type="text/html"/>
     <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-24T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+        <title>论文阅读：Control Theoretic Approach to Fine-Tuning and Transfer Learning</title>
+        <published>2025-09-24T00:00:00+00:00</published>
+        <updated>2025-09-24T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2404.11013&quot;&gt;[2404.11013] Control Theoretic Approach to Fine-Tuning and Transfer Learning&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;preliminaries&quot;&gt;Preliminaries&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Hausdorff Space&lt;&#x2F;strong&gt;: A topological space $(X, \mathcal{T})$ is said to be a &lt;em&gt;Hausdorff space&lt;&#x2F;em&gt; if&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\forall x,y\in X,x\neq y\Longrightarrow\exists U,V\in\mathcal{T}\mathrm{&lt;del&gt;s.t.&lt;&#x2F;del&gt;}x\in U,y\in V,\mathrm{&lt;del&gt;and&lt;&#x2F;del&gt;}U\cap V=\emptyset
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\mathcal{T}$ is the set of all the open sets in the space.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hausdorff 空间保证了点的可分离性。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Basis of Topological Spaces&lt;&#x2F;strong&gt;: The &lt;em&gt;basis&lt;&#x2F;em&gt; of a topological space $\mathcal{B}$ is a set of open sets satisfying&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\exists\mathcal{B}=\{B_1,B_2,B_3,\ldots\}\subseteq\mathcal{T}\mathrm{&lt;del&gt;s.t.&lt;&#x2F;del&gt;}\forall U\in\mathcal{T},U=\bigcup_{i\in I}B_i\text{ for some }I
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Second-Countable&lt;&#x2F;strong&gt;: A topological space $(X, \mathcal{T})$ is said to be &lt;em&gt;second countable&lt;&#x2F;em&gt; if $\mathcal{T}$ has a countable basis.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Homeomorphism&lt;&#x2F;strong&gt;: A mapping $\phi: U \to V$ is &lt;em&gt;homeomorphism&lt;&#x2F;em&gt; if both $\phi$ and $\phi^{-1}$ are continuous mapping.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Locally Euclidean and Chart&lt;&#x2F;strong&gt;: A topological space $X$ is said to be &lt;em&gt;locally Euclidean&lt;&#x2F;em&gt; if for any $p \in X$, there exists an open neighbor $U$ of $p$, a open set $V \subseteq \mathbb{R}^n$, and a homeomorphism $\phi$ such that&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\phi: U \to V.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Here $\phi$ is called the &lt;em&gt;chart&lt;&#x2F;em&gt;.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;流形上每个局部都可以被坐标卡 chart 映射到一块 $\mathbb{R}^n$ 的区域&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Topological Manifold&lt;&#x2F;strong&gt;: An $n$-dimensional &lt;em&gt;topological manifold&lt;&#x2F;em&gt; is a topological space that is Hausdorff, second-countable, and locally Euclidean of dimension $n$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Smooth Curve&lt;&#x2F;strong&gt;: A &lt;em&gt;smooth curve&lt;&#x2F;em&gt; at a point $p$ on an manifold $M$ is a smooth map $\gamma: I \to M$, where $I \subseteq \mathbb{R}$ is an open interval containing $0$, such that $\gamma(0) = p$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Equivalence Relation on Curves&lt;&#x2F;strong&gt;: Let $(U, \phi)$ be a local chart containing the point $p$, where $\phi: U \to \mathbb{R}^n$. Two smooth curves $\gamma_1$ and $\gamma_2$ at $p$ are said to be &lt;em&gt;equivalent&lt;&#x2F;em&gt; iff their velocity vectors in the chart coordinates are identical, that is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\frac{\mathrm{d}}{\mathrm{d}t}(\phi\circ\gamma_1)(t)\bigg|_{t=0}=\frac{\mathrm{d}}{\mathrm{d}t}(\phi\circ\gamma_2)(t)\bigg|_{t=0}.
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;可以理解为切平面上一个方向的曲线是等价的&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Tangent Vector&lt;&#x2F;strong&gt;: A &lt;em&gt;tangent vector&lt;&#x2F;em&gt; $v$ at a point $p$ is an equivalence class of all smooth curves passing through $p$. We denote this as $v = [\gamma]$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Tangent Space&lt;&#x2F;strong&gt;: The tangent space at a point $p$ on $M$, denoted by $T_pM$, is the set of all tangent vectors at $p$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+T_pM:=\{[\gamma]\mid\gamma:I\to M\text{ is a smooth curve with }\gamma(0)=p\}
+$$&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;problem-statement&quot;&gt;Problem Statement&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Dataset and System&lt;&#x2F;strong&gt;: Consider the paired sets $(\mathcal{X},\mathcal{Y})=\{(x^{i},y^{i})\}_{i=1}^{q}$ in a connected Riemannian manifold $\mathcal{M}$​, where elements of $\mathcal{X}$ are pairwise distinct. We take the system&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\dot{x}(t)=f(u(t), x(t)),
+\quad u\in L_\infty([0,T],\mathbb{R}^{\bar{n}\times\bar{n}})
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+x^i\in\mathbb{R}^n
+\overset{E}{\operatorname*{\longrightarrow}}
+\bar{x}^i\in\mathbb{R}^{\bar{n}}
+\overset{\varphi_T(u,\cdot)}{\operatorname*{\longrightarrow}}
+\bar{y}^i\in\mathbb{R}^{\bar{n}}
+\overset{R}{\operatorname*{\longrightarrow}}
+y^i\in\mathbb{R}^{n_o}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $E: \mathbb{R}^n \to \mathbb{R}^{\bar{n}}$ is an embedding function, $R: \mathbb{R}^{\bar{n}} \to \mathbb{R}^n$ is a readout function, $\bar{n}$ is the embedding dimension, $n_o$ is the output dimension, and $\varphi_t(u,\cdot)$ is the map generated by the control function $u$. For simplicity, we assume that $n = \bar{n}$, and let $R$ be the orthogonal projection, that is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+R:x\in\mathbb{R}^n\mapsto Cx\in\mathbb{R}^{n_o},
+\quad
+\text{where} \quad C=[O_{n_{o}\times n-n_{o}}I_{n_{o}\times n_{o}}]\in\mathbb{R}^{n_{o}\times n}.
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If $n = n_o$ and $R$ is the identity map, then we call the problem the control &lt;u&gt;with fixed end-points&lt;&#x2F;u&gt;（固定终值条件）. Otherwise, control with &lt;u&gt;partially constrained end-points&lt;&#x2F;u&gt;（终值约束条件）.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Objective (Memorization Property)&lt;&#x2F;strong&gt; : The control $u$ is said to have memorized the ensemble $(\mathcal{X}, \mathcal{Y})$ if the following holds for a finite $T \geq 0$:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+R(\varphi_T(u,E(x^i)))=y^i, \quad \forall x^i\in\mathcal{X}.
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我们的总目标就是找到一个控制信号 $u$，对任意数据都能满足 memorization property。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Cost Functional&lt;&#x2F;strong&gt;: We define per-sample cost functional for a given point $x^i$ as&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{J}^i(u)=\frac{1}{2}\|C\varphi(u,x^i)-y^i\|^2.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Then, the cost-functional for the entire ensemble is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{J}(u,\mathcal{X}):=\sum_{i=1}^{q}\|C\varphi(u,x^{i})-y^{i}\|^{2}+\lambda\int_{0}^{T}\|u(\tau)\|^{2}d\tau.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\lambda$ is some regularization coefficient.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;q-Folded Method&lt;&#x2F;strong&gt;: Suppose $\mathcal{X}$ contains $q$ data points. Stack all the points in $\mathcal{X}$ into a vector of dimension $nq$ denoted by $X_0$, and the stacked outputs by $Y$. The minimization problem is&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{J}(u,X_0):=\|\Lambda(C)\vec{\varphi}_T(u,X_0)-Y\|^2+\int_0^T\|u(\tau)\|^2d\tau.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\text{subject to} \quad \dot{X}(t)=F(u(t),X(t)), \quad X(0)=X_0.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\Lambda(C):=\mathrm{diag}(C,\cdots,C)\in\mathbb{R}^{n_{0}q\times nq}$, and $F$ is the dynamics created by copying $f$ $q$-times.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;使用 q-folded method 求解非常困难。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;existence-of-a-control-function&quot;&gt;Existence of a Control Function&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Lie Bracket&lt;&#x2F;strong&gt;: Let $g_1$ and $g_2$ be differentiable vector fields in $\mathcal{M} \subset \mathbb{R}^n$, we call the &lt;em&gt;Lie bracket&lt;&#x2F;em&gt; of $g_1$ and $g_2$ the vector field:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+&lt;a href=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning&#x2F;x&quot;&gt;g_1,g_2&lt;&#x2F;a&gt;:=\frac{\partial g_2(x)}{\partial x}g_1(x)-\frac{\partial g_1(x)}{\partial x}g_2(x), \quad \mathrm{for} \quad x\in\mathcal{M}
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Lie bracket 的核心含义：测量路径的不闭合程度，沿着以下两种路径：(1) 先 $g_1$ 走 $\epsilon$，再 $g_2$ 走 $\epsilon$；(2) $g_2$ 走 $\epsilon$，再 $g_1$ 走 $\epsilon$。两种路线到达的终点距离为：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\epsilon^2\left(\frac{\partial g_2(x)}{\partial x}g_1(x)-\frac{\partial g_1(x)}{\partial x}g_2(x)\right).
+$$&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Maneuver Set&lt;&#x2F;strong&gt;: Let $\mathcal{F}^0=\{f(x,u)|u\in L_\infty([0,T],\mathbb{R}^{n\times n})\}$ be the maneuver set with all the feasible control functions, and recursively define&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{F}^k=\mathcal{F}^{k-1}\cup\left\{&lt;a href=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning&#x2F;x&quot;&gt;g_i,g_j&lt;&#x2F;a&gt;\mid g_i,g_j\in\mathcal{F}^{k-1}\right\}.
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$\mathcal{F}$ 是中的元素是关于 $x$ 的函数&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\mathcal{F}^0$：$u$ 可以是任意矩阵，此时每个 $u$ 对应一种运动模式 $g_i(x)$，因此 $\mathcal{F}^0$ 包含了所有的&lt;u&gt;直接运动方式&lt;&#x2F;u&gt;（但是不能组合不同运动模式）。&lt;&#x2F;li&gt;
+&lt;li&gt;$\mathcal{F}^k$：在 $\mathcal{F}^{k-1}$ 的运动模式基础上进一步进行组合（例如快速交替执行它们），如果这种组合产生了一种新的运动模式，则加入动作库。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;这种方式一般适用于 $f$ 是&lt;strong&gt;非线性&lt;&#x2F;strong&gt;的情况，否则直接组合 $u$ 即可。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Control Distribution&lt;&#x2F;strong&gt;: The corresponding distributions at point $x \in \mathbb{R}^n$ are&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{D}_{x}^{k}(\mathcal{F})=\mathrm{span}\left\{g(x)\mid g\in\mathcal{F}^{k}\right\}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;We can see that $\mathcal{D}_{x}^{k}(\mathcal{F})$ satisfies $\mathcal{D}_{x}^{k}(\mathcal{F})\subseteq\mathcal{D}_{x}^{k+1}(\mathcal{F})$.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$\mathcal{D}_{x}^{k}(\mathcal{F})$ 表示从 $x$ 出发，从 $\mathcal{F}^k$ 动作库中取一个动作，能达到的集合。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Bracket-Generating&lt;&#x2F;strong&gt;: We call $\mathcal{F}$ &lt;em&gt;bracket-generating&lt;&#x2F;em&gt; if $\mathcal{D}_x^\infty (\mathcal{F})$ spans $T_xE(\mathcal{M})$ for all $x \in E(\mathcal{M})$. Here $E$ is the embedding function and $T_x$ represents the tangent space.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$T_xE(\mathcal{M})$ 表示了所有可能的运动方向，因此 bracket-generating 表示了我们的控制可以控制往任何方向。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;q-Folded Statement&lt;&#x2F;strong&gt;: Assume $\mathcal{X}$ contains finite pairwise distinct points, $n &amp;gt; n_o$, $R(x) = Cx$. If $\tilde{\mathcal{F}}$ is bracket-generating in $E(\mathcal{M})^{(q)}$, then there exists $u$ and a finite time $T \geq 0$ such that the system memorizes $(\mathcal{X}, \mathcal{Y})$ by the control function $u$.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Embedding space $E(\mathcal{M})^{q}:=E(\mathcal{M})\times\cdots\times E(\mathcal{M})$&lt;&#x2F;li&gt;
+&lt;li&gt;Ensemble $X=\left[E(x^1)^\top,\cdots,E(x^q)^\top\right]^\top\in E(\mathcal{M})^q \subseteq \mathbb{R}^{nq}$&lt;&#x2F;li&gt;
+&lt;li&gt;$\Delta^{q}:=\{[E(x^{1})^{\top},\cdots,E(x^{q})^{\top}]^{\top}\in E(\mathcal{M})^{q} | E(x^i)=E(x^j)\mathrm{&lt;del&gt;for&lt;&#x2F;del&gt;}i\neq j\}$&lt;&#x2F;li&gt;
+&lt;li&gt;Complement $E(\mathcal{M})^{(q)}:=E(\mathcal{M})^{q}\setminus\Delta^{q}$&lt;&#x2F;li&gt;
+&lt;li&gt;$\tilde{\mathcal{F}}^0=\{[f(u,x^1)^\top,f(u,x^2)^\top,\cdots,f(u,x^q)^\top]^\top\in\mathbb{R}^{nq}|u\in L_\infty([0,T],\mathbb{R}^{n\times n})\}.$&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;tuning-without-forgetting&quot;&gt;Tuning without Forgetting&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Objective&lt;&#x2F;strong&gt;: Let $\mathcal{X}^{j}=\{x^{i}\in\mathcal{X}|i=1,2,\cdots,j\}$, and $\mathcal{Y}^j$ the corresponding batch of labels. Denote $u^k$ the control function at the $k$th iteration. Assume that $u^k$ has memorized the ensemble $(\mathcal{X}^{j},\mathcal{Y}^{j})$. We propose an iterative method to find a control $u^\ast$ such that&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+C\varphi(u^*,x^i)=y^i
+\quad \text{for all} \quad
+x^i\in\mathcal{X}^{j+1}(=\mathcal{X}^j\cup\{x^{j+1}\})
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Tuning without Forgetting&lt;&#x2F;strong&gt;: Assume that $u^k$ has memorized the ensemble $(\mathcal{X}^{j},\mathcal{Y}^{j})$. If the update $\delta u^k$ satisfies&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{J}^{j+1}(u^k+\delta u^k)\leq\mathcal{J}^{j+1}(u^k)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+R\left(\varphi(u^k+\delta u^k,x^i)\right)=y^i+o(\delta u^k),\quad \forall x^i\in\mathcal{X}^j
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;Then the control function $u^{k+1} := u^k + \delta u^k$ has been &lt;em&gt;tuned for&lt;&#x2F;em&gt; &lt;em&gt;$\mathcal{X}^{j+1}$&lt;&#x2F;em&gt; &lt;em&gt;without forgetting&lt;&#x2F;em&gt; $\mathcal{X}^j$.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;条件1：要求更新控制后，对新数据点的 cost 下降&lt;&#x2F;p&gt;
+&lt;p&gt;条件2：要求更新控制后，对老数据点的影响不明显&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;a-projected-gradient-descent-method&quot;&gt;A Projected Gradient Descent Method&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Linearized Controllability Property&lt;&#x2F;strong&gt;: We say the system $\dot{x}(t)=f(x(t),u(t))$ has the &lt;em&gt;Linearized Controllability Property (LPC)&lt;&#x2F;em&gt;  at $x^i$ for all $u\in L_{\infty}([0,T],\mathbb{R}^{n\times n})$ if the linear time varying system&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\dot{z}(t)=\left(\frac{\partial f(x,u)}{\partial x}\bigg|_{(x=\varphi_t(u,x^i),u)}\right)z(t)+\left(\frac{\partial f(x,u)}{\partial u}\bigg|_{(x=\varphi_t(u,x^i),u)}\right)v(t),
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $v(t)\in L_\infty([0,T],\mathbb{R}^{n\times n})$ is controllable.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;LPC 是算法能正常运作的前提，其保证了非线性系统 $\dot{x} = f(x,u)$ 在局部线性化后，扰动可以被任意控制。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Impact of Updated Control&lt;&#x2F;strong&gt;: Suppose that a given control function $u$ has memorized the pair of points $(x^i, y^i)$, then&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\delta\varphi_t(u,x^i)=\int_0^t\Phi_{(u,x^i)}(t,\tau)\frac{\partial f(x,u)}{\partial u}\bigg|_{(x=\varphi_\tau(u,x^i),u)}\delta u(\tau)d\tau
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;up to first order in $\delta u(t)$. Here $\Phi_{(u,x^i)}(t, \tau)$ is the state transfer matrix defined by&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\frac{\mathrm{d}}{\mathrm{d}t}\Phi(t,\tau)=A(t)\Phi(t,\tau), \quad
+\Phi(\tau,\tau)=I
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+A(t) = \frac{\partial f(x,u)}{\partial x}\bigg|_{(x=\varphi_t(u,x^i),u)}
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;上面的公式给出了如果我在各个 $\tau$ 时刻更新了控制为 $\delta u(\tau)$，那么最终的输出会变多少。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;L Operator&lt;&#x2F;strong&gt;: Let $R$ be the readout function,&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{L}_{(u,x^i)}(\delta u):=R\left(\int_0^T\Phi_{(u,x^i)}(T,\tau)\frac{\partial f(x(\tau),u(\tau))}{\partial u}\delta u(\tau)d\tau\right)
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$\mathcal{L}$ 算子代表了 $\delta u$ 对最终输出的影响，如果希望不遗忘，则尽可能要让 $\mathcal{L}$ 算子为 $0$。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Null Space of L Operator&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{K}(u,x^i):=\operatorname{span}\{\delta u\in L_\infty([0,T],\mathbb{R}^{n\times n})\mid\mathcal{L}_{(u,x^i)}(\delta u)=0\}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{K}(u,\mathcal{X}^j):=\mathrm{span}\{\delta u\in L_\infty([0,T],\mathbb{R}^{n\times n})\mid\delta u\in\bigcap_{x^i\in\mathcal{X}^j}\mathcal{K}(u,x^i)\}
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$\mathcal{K}$ 的价值在于只要我们选出了一个安全的子空间用于更新&#x2F;投影&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Projection Operator&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\operatorname{proj}_{\mathcal{K}(u,\mathcal{X}^j)}\nabla_{u(t)}\mathcal{J}^{j+1}(u):=\arg\min_{d(t)\in\mathcal{K}(u,\mathcal{X}^j)}\int_{0}^{T}\|d(\tau)-\nabla_{u(\tau)}\mathcal{J}^{j+1}(u)\|^2d\tau
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;将理想学习方向 $\nabla_{u(t)}\mathcal{J}^{j+1}$ 投影到 $\mathcal{K}(u,\mathcal{X}^j)$ 中，从而构成更新方向，即 $\delta u=\mathrm{proj}_{\mathcal{K}}(\nabla_uJ^{j+1})$。这里的投影操作就是找了 $\mathcal{K}(u,\mathcal{X}^j)$ 中离 $\nabla_{u(t)}\mathcal{J}^{j+1}$ 距离最近的。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;main-results&quot;&gt;Main Results&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Condition for Tuning without Forgetting&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning&#x2F;assets&#x2F;image-20250923162925-4ajpvcw.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;More Detailed Condition&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning&#x2F;assets&#x2F;image-20250923163040-l7cwbjx.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;numerical-methods&quot;&gt;Numerical Methods&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Approximation of&lt;&#x2F;strong&gt; $\mathcal{L}_{(u,x^i)}(\cdot)$: We provide a method to compute a numerical approximation of $\mathcal{L}_{(u,x^i)}(\cdot)$ for all $x^i \in \mathcal{X}^j$,&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning&#x2F;assets&#x2F;image-20250923171129-hc0u9w1.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Phase 1 (Implement Theorem 1)&lt;&#x2F;strong&gt; :&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning&#x2F;assets&#x2F;image-20250923171225-axwn57g.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Phase 2 (Minimize the Norm of&lt;&#x2F;strong&gt; **$u$**​ &lt;strong&gt;)&lt;&#x2F;strong&gt;  : In this phase, we project the gradient of the $L^2$ norm of the control function onto the subspace of functions $\mathcal{K}(u^k, \mathcal{X})$ at each iteration.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning&#x2F;assets&#x2F;image-20250923171302-jj3w9kz.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Phase 3 (Refinement)&lt;&#x2F;strong&gt; : In this phase, we aim to refine the control $u$ to steer all the points closer to their associated end-points. Let $\mathcal{P}$ be the number of iterations per sample.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-control-theoretic-approach-to-fine-tuning-and-transfer-learning&#x2F;assets&#x2F;image-20250923171331-5b7vmk1.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>线性可控性 Linearized Controllability Property LPC</title>
         <published>2025-09-24T00:00:00+00:00</published>
         <updated>2025-09-24T00:00:00+00:00</updated>
