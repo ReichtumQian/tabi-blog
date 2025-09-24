@@ -34,7 +34,7 @@
 &lt;h2 id=&quot;preliminaries&quot;&gt;Preliminaries&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;strong&gt;Hausdorff Space&lt;&#x2F;strong&gt;: A topological space $(X, \mathcal{T})$ is said to be a &lt;em&gt;Hausdorff space&lt;&#x2F;em&gt; if&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-\forall x,y\in X,x\neq y\Longrightarrow\exists U,V\in\mathcal{T}\mathrm{&lt;del&gt;s.t.&lt;&#x2F;del&gt;}x\in U,y\in V,\mathrm{&lt;del&gt;and&lt;&#x2F;del&gt;}U\cap V=\emptyset
+\forall x,y\in X,x\neq y\Longrightarrow\exists U,V\in\mathcal{T}\mathrm{~s.t.~}x\in U,y\in V,\mathrm{~and~}U\cap V=\emptyset
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;where $\mathcal{T}$ is the set of all the open sets in the space.&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
@@ -42,7 +42,7 @@ $$&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Basis of Topological Spaces&lt;&#x2F;strong&gt;: The &lt;em&gt;basis&lt;&#x2F;em&gt; of a topological space $\mathcal{B}$ is a set of open sets satisfying&lt;&#x2F;p&gt;
 &lt;p&gt;$$
-\exists\mathcal{B}=\{B_1,B_2,B_3,\ldots\}\subseteq\mathcal{T}\mathrm{&lt;del&gt;s.t.&lt;&#x2F;del&gt;}\forall U\in\mathcal{T},U=\bigcup_{i\in I}B_i\text{ for some }I
+\exists\mathcal{B}=\{B_1,B_2,B_3,\ldots\}\subseteq\mathcal{T}\mathrm{~s.t.~}\forall U\in\mathcal{T},U=\bigcup_{i\in I}B_i\text{ for some }I
 $$&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;Second-Countable&lt;&#x2F;strong&gt;: A topological space $(X, \mathcal{T})$ is said to be &lt;em&gt;second countable&lt;&#x2F;em&gt; if $\mathcal{T}$ has a countable basis.&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;strong&gt;Homeomorphism&lt;&#x2F;strong&gt;: A mapping $\phi: U \to V$ is &lt;em&gt;homeomorphism&lt;&#x2F;em&gt; if both $\phi$ and $\phi^{-1}$ are continuous mapping.&lt;&#x2F;p&gt;
@@ -160,7 +160,7 @@ $$&lt;&#x2F;p&gt;
 &lt;ul&gt;
 &lt;li&gt;Embedding space $E(\mathcal{M})^{q}:=E(\mathcal{M})\times\cdots\times E(\mathcal{M})$&lt;&#x2F;li&gt;
 &lt;li&gt;Ensemble $X=\left[E(x^1)^\top,\cdots,E(x^q)^\top\right]^\top\in E(\mathcal{M})^q \subseteq \mathbb{R}^{nq}$&lt;&#x2F;li&gt;
-&lt;li&gt;$\Delta^{q}:=\{[E(x^{1})^{\top},\cdots,E(x^{q})^{\top}]^{\top}\in E(\mathcal{M})^{q} | E(x^i)=E(x^j)\mathrm{&lt;del&gt;for&lt;&#x2F;del&gt;}i\neq j\}$&lt;&#x2F;li&gt;
+&lt;li&gt;$\Delta^{q}:=\{[E(x^{1})^{\top},\cdots,E(x^{q})^{\top}]^{\top}\in E(\mathcal{M})^{q} | E(x^i)=E(x^j)\mathrm{~for~}i\neq j\}$&lt;&#x2F;li&gt;
 &lt;li&gt;Complement $E(\mathcal{M})^{(q)}:=E(\mathcal{M})^{q}\setminus\Delta^{q}$&lt;&#x2F;li&gt;
 &lt;li&gt;$\tilde{\mathcal{F}}^0=\{[f(u,x^1)^\top,f(u,x^2)^\top,\cdots,f(u,x^q)^\top]^\top\in\mathbb{R}^{nq}|u\in L_\infty([0,T],\mathbb{R}^{n\times n})\}.$&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
