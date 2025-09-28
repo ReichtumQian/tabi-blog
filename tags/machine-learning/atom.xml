@@ -17,7 +17,81 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-18T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-28T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+        <title>神经正切核 Neural Tangent Kernel, NTK</title>
+        <published>2025-09-28T00:00:00+00:00</published>
+        <updated>2025-09-28T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/shen-jing-zheng-qie-he-neural-tangent-kernel-ntk/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/shen-jing-zheng-qie-he-neural-tangent-kernel-ntk/</id>
+        
+            <content type="html">&lt;p&gt;在文章 &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2407.10490&quot;&gt;[2407.10490] Learning Dynamics of LLM Finetuning&lt;&#x2F;a&gt; 中我们接触到了神经正切核的概念，其刻画了不同数据对参数、Logits 的影响。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;wen-ti-hui-gu&quot;&gt;问题回顾&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;分类问题&lt;&#x2F;strong&gt;：我们考虑多分类问题，将输入 $\mathbf{x}$ 映射至 $\mathbf{y} \in \mathcal{V}$，其中 $\mathcal{V}$ 是大小为 $V$ 的字典。模型会先输出 logits $\mathbf{z} = h_\theta(\mathbf{x}) \in \mathbb{R}^V$，然后取 Softmax：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{x}
+\xrightarrow{\text{Hidden Layers}}
+\underbrace{
+\mathbf{z} = h_{\theta}(\mathbf{x}) =
+\begin{bmatrix}
+z_1\\ z_2 \\ \vdots \\ z_V
+\end{bmatrix}}_{\text{logits}}
+\xrightarrow{\text{Softmax}}
+\underbrace{
+\begin{bmatrix}
+\pi_{\theta}(y_1\mid \mathbf{x})\\
+\pi_{\theta}(y_2\mid \mathbf{x})\\
+\vdots\\
+\pi_{\theta}(y_V\mid \mathbf{x})
+\end{bmatrix}}_{\text{confidence}}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;学习样本的 Dynamics&lt;&#x2F;strong&gt;：考虑学习新样本 $(\mathbf{x}_u, \mathbf{y}_u)$，学习率为 $\eta$，通过在 $\mathbf{x}_u$ 上进行一次梯度下降，模型在 $\mathbf{x}_o$ 上预测的变化值：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\Delta \log \pi^t(\mathbf{y} \mid \mathbf{x}_o) := \log \pi_{\theta^{t+1}}(\mathbf{y} \mid \mathbf{x}_o) - \log \pi _{\theta^t}(\mathbf{y} \mid \mathbf{x}_o).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Learning Dynamics&lt;&#x2F;strong&gt;：单步的 Learning Dynamics 为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\underbrace{\Delta \log \pi^t(\mathbf{y} \mid \mathbf{x}_o)}_{V \times 1} = -\eta \underbrace{\mathcal{A}^t(\mathbf{x}_o)}_{V \times V} \underbrace{\mathcal{K}^t(\mathbf{x}_o, \mathbf{x}_u)}_{V \times V} \underbrace{\mathcal{G}^t(\mathbf{x}_u, \mathbf{y}_u)}_{V \times 1} + \mathcal{O}\bigl(\eta^2 \|\nabla_\theta \mathbf{z}(\mathbf{x}_u)\|_{\text{op}}^2\bigr),
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\mathcal{A}^t = \nabla_{\mathbf{z}} \log \pi_{\theta^t}(\mathbf{x}_o) = I - \mathbf{1} \pi^{\top}_{\theta^t}(\mathbf{x}_o)$ 将 logits 中的变化 $\Delta \mathbf{z}$ 映射到输出分布 $\log \pi (\mathbf{y} \mid \mathbf{x}_o)$，即对应着 Softmax 的矩阵表达；&lt;&#x2F;li&gt;
+&lt;li&gt;$\mathcal{K}^t(\mathbf{x}_o, \mathbf{x}_u) = (\nabla_{\theta}\mathbf{z}(\mathbf{x}_o)\mid_{\theta^t})(\nabla_{\theta}\mathbf{z}(\mathbf{x}_u)\mid_{\theta^t})^{\top}$ 衡量了 $\mathbf{x}_o$ 和 $\mathbf{x}_u$ 的相互影响程度；&lt;&#x2F;li&gt;
+&lt;li&gt;$\mathcal{G}^t(\mathbf{x}_u, \mathbf{y}_u) = \nabla_{\mathbf{z}}\mathcal{L}(\mathbf{x}_u, \mathbf{y}_u)\mid_{\mathbf{z}^t}$ 从当前分布指向期望的分布，即误差信号。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;shen-jing-zheng-qie-he-neural-tangent-kernel-ntk&#x2F;assets&#x2F;mnist-20250928101429-b15q9es.png&quot; alt=&quot;mnist&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;shen-jing-zheng-qie-he-de-li-jie&quot;&gt;神经正切核的理解&lt;&#x2F;h2&gt;
+&lt;p&gt;$\nabla_\theta \mathbf{z}(\mathbf{x})$ &lt;strong&gt;的理解&lt;&#x2F;strong&gt;：$\mathbf{z}(\mathbf{x}) \in \mathbb{R}^V$ 是模型对输入 $\mathbf{x}$ 输出的 logits 向量，$\theta \in \mathbb{R}^P$ 是模型所有参数构成的向量，因此 $\nabla_\theta \mathbf{z}(\mathbf{x})$ 是 $\mathbf{z}(\mathbf{x})$ 关于 $\theta$ 的 &lt;u&gt;Jacobian Matrix&lt;&#x2F;u&gt;：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\nabla_\theta\mathbf{z}(\mathbf{x})=
+\begin{bmatrix}
+\frac{\partial z_1}{\partial\theta_1} &amp;amp; \frac{\partial z_1}{\partial\theta_2} &amp;amp; \ldots &amp;amp; \frac{\partial z_1}{\partial\theta_P} \\
+\frac{\partial z_2}{\partial\theta_1} &amp;amp; \frac{\partial z_2}{\partial\theta_2} &amp;amp; \ldots &amp;amp; \frac{\partial z_2}{\partial\theta_P} \\
+\vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+\frac{\partial z_V}{\partial\theta_1} &amp;amp; \frac{\partial z_V}{\partial\theta_2} &amp;amp; \ldots &amp;amp; \frac{\partial z_V}{\partial\theta_P}
+\end{bmatrix}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$\nabla_\theta \mathbf{z}(\mathbf{x})$ 的第 $i$ 行 $\nabla_\theta {z}_i(\mathbf{x})$ 表示了为了&lt;u&gt;使第 &lt;&#x2F;u&gt;​&lt;u&gt;$i$&lt;&#x2F;u&gt;​&lt;u&gt; 个 logit &lt;&#x2F;u&gt;​&lt;u&gt;$z_i$&lt;&#x2F;u&gt;​&lt;u&gt; 增长得最快，模型 &lt;&#x2F;u&gt;​&lt;u&gt;$\theta$&lt;&#x2F;u&gt;​&lt;u&gt; 应该更新的方向&lt;&#x2F;u&gt;。换而言之，&lt;u&gt;模型 &lt;&#x2F;u&gt;​&lt;u&gt;$\theta$&lt;&#x2F;u&gt;​&lt;u&gt; 对第 &lt;&#x2F;u&gt;​&lt;u&gt;$i$&lt;&#x2F;u&gt;​&lt;u&gt; 个 logit 的敏感度&lt;&#x2F;u&gt;。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;矩阵乘积的含义&lt;&#x2F;strong&gt;：我们来分析 $\mathcal{K}$ 的第 $(i,j)$ 个元素，其是 $\nabla_\theta z_i(\mathbf{x}_o)$ 与 $\nabla_\theta z_j(\mathbf{x}_u)$ 的内积&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{K}_{ij}=(\nabla_\theta z_i(\mathbf{x}_o))\cdot(\nabla_\theta z_j(\mathbf{x}_u))^\top=\sum_{p=1}^P\frac{\partial z_i(\mathbf{x}_o)}{\partial\theta_p}\frac{\partial z_j(\mathbf{x}_u)}{\partial\theta_p}
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;向量 $\nabla_\theta z_i(\mathbf{x}_o)$ 是在参数空间 $\mathbb{R}^P$ 中，能够最有效提升【输入为 $\mathbf{x}_o$ 时第 $i$ 个类别的 logit 值】的方向；&lt;&#x2F;li&gt;
+&lt;li&gt;向量 $\nabla_\theta z_j(\mathbf{x}_u)$ 是在参数空间 $\mathbb{R}^P$ 中，能够最有效提升【输入为 $\mathbf{x}_u$ 时第 $j$ 个类别的 logit 值】的方向。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;参数空间中的相似性&lt;&#x2F;strong&gt;：$\mathcal{K}_{ij}$ 作为一个度量矩阵，其度量了两个方向在参数空间中的对齐程度或一致性&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;若 $\mathcal{K}_{ij}$ 为很大的正数：意味着那些能够有效提升 $z_i(\mathbf{x}_o)$ 的参数更新，同样也有效于提升 $z_j(\mathbf{x}_u)$；&lt;&#x2F;li&gt;
+&lt;li&gt;若 $\mathcal{K}_{ij}$ 接近于 $0$：两个方向在参数空间正交，改变参数来影响 $z_i(\mathbf{x}_o)$ 对 $z_j(\mathbf{x}_u)$ 几乎没有影响，反之亦然；&lt;&#x2F;li&gt;
+&lt;li&gt;若 $\mathcal{K}_{ij}$ 为很大的负数：两个方向是相反的，提升 $z_i(\mathbf{x}_o)$ 的参数更新会导致 $z_j(\mathbf{x}_u)$ 的下降。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;在 Learning Dynamics 中的作用&lt;&#x2F;strong&gt;：$\mathcal{K}^t(\mathbf{x}_o, \mathbf{x}_u)$ 接收来自于 $\mathbf{x}_u$ 的误差信号 $\mathcal{G}^t$，并将其翻译为对 $\mathbf{x}_o$ 的 logits $\mathbf{z}(\mathbf{x}_o)$ 的影响&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>Approximate KL Divergence using Fisher Information Matrix</title>
         <published>2025-09-18T00:00:00+00:00</published>
         <updated>2025-09-18T00:00:00+00:00</updated>
