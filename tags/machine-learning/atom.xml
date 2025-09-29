@@ -17,7 +17,27 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-28T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-29T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+        <title>Learning Dynamics of LLM Fine-Tuning</title>
+        <published>2025-09-29T00:00:00+00:00</published>
+        <updated>2025-09-29T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/learning-dynamics-of-llm-fine-tuning/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/learning-dynamics-of-llm-fine-tuning/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2407.10490&quot;&gt;[2407.10490] Learning Dynamics of LLM Finetuning&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;learning-dynamics-of-llm-fine-tuning&#x2F;assets&#x2F;image-20250929231141-lyml7ry.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;learning-dynamics-of-llm-fine-tuning&#x2F;assets&#x2F;image-20250929231231-qp492us.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;learning-dynamics-of-llm-fine-tuning&#x2F;assets&#x2F;image-20250929231257-upw48rn.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;learning-dynamics-of-llm-fine-tuning&#x2F;assets&#x2F;image-20250929231322-b6k87m4.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;learning-dynamics-of-llm-fine-tuning&#x2F;assets&#x2F;image-20250929231352-qvcaj66.png&quot; alt=&quot;image&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>神经正切核 Neural Tangent Kernel, NTK</title>
         <published>2025-09-28T00:00:00+00:00</published>
         <updated>2025-09-28T00:00:00+00:00</updated>
