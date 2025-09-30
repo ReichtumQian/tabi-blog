@@ -20,11 +20,11 @@ tags = ["PyTorch", "Python"]
 
 **网络层 Layers**：网络层是神经网络中最基本的计算单元，负责执行具体的数学运算。常见的网络层类型包括：
 
-- `Conv2d`: 二维卷积层，用于提取图像特征，是 CNN 的核心。例如 `Conv2d(3, 64, kernel_size=(3, 3), ...)`​ 表示输入通道为 3 (RGB图像)，输出通道为 64，卷积核大小为 3x3。
-- `BatchNorm2d`: 二维批量归一化层，用于加速模型训练，提高稳定性。
-- `ReLU`: 激活函数层，引入非线性，使网络能够学习更复杂的模式。
-- `Linear`: 全连接层，通常用于网络的末端，进行分类或回归。
-- `Identity`: 占位层，它什么也不做，原样输出输入。在 ResNet 中有时用于保持结构一致性。
+- ​`Conv2d`​: 二维卷积层，用于提取图像特征，是 CNN 的核心。例如 `Conv2d(3, 64, kernel_size=(3, 3), ...)`​ 表示输入通道为 3 (RGB图像)，输出通道为 64，卷积核大小为 3x3。
+- ​`BatchNorm2d`​: 二维批量归一化层，用于加速模型训练，提高稳定性。
+- ​`ReLU`​: 激活函数层，引入非线性，使网络能够学习更复杂的模式。
+- ​`Linear`​: 全连接层，通常用于网络的末端，进行分类或回归。
+- ​`Identity`​: 占位层，它什么也不做，原样输出输入。在 ResNet 中有时用于保持结构一致性。
 
 **网络层名 Layer Names**：网络层名是你在代码中给每个网络层或容器赋予的变量名。在 PyTorch 中的模型摘要中，括号内的为网络层名。网络层名是在模型初始化时被赋予的
 
@@ -44,7 +44,7 @@ class MyModel(nn.Module):
 
 **网络层容器 Containers**：网络层容器本身也是一种 `nn.Module`​，它的主要作用是像一个 "盒子" 或 "工具箱"，用来组织和管理其他的 `nn.Module`​（包括其他容器和计算层）。我们这里介绍两种容器：
 
-- `Sequential`: 顺序容器。这是最常见的容器，它会按照你添加模块的顺序，依次执行内部的模块。
+- ​`Sequential`​: 顺序容器。这是最常见的容器，它会按照你添加模块的顺序，依次执行内部的模块。
 - 自定义容器 ( 例如 `ResNet`​, `BasicBlock`​): 除了 `Sequential`​ 这种现成的容器，我们还可以通过自己定义一个类并继承 `nn.Module`​ 来创建更复杂的自定义容器。
 
 **Sequential 容器中的层名**：默认情况下 `Sequential`​ 容器从 `0`​ 开始给每层容器起名。例如
@@ -88,7 +88,70 @@ MyModel(
 )
 ```
 
-‍
+---
+
+## State Dict 方法及其用途
+
+**State Dict 方法**：`model.state_dict()`​ 会返回一个 `OrderedDict`​，Key 为每层参数的名称，Value 是每层参数的值。例如前面的 `MyModel`​ 的 `state_dict()`​ 为：
+
+```python
+{
+    # 来自 layer1
+    'layer1.0.weight':  torch.Size([20, 1, 5, 5]),
+    'layer1.0.bias':    torch.Size([20]),
+    'layer1.2.weight':  torch.Size([64, 20, 5, 5]),
+    'layer1.2.bias':    torch.Size([64]),
+
+    # 来自 layer2（使用了 OrderedDict 显式命名）
+    'layer2.convolution_layer_1.weight': torch.Size([20, 1, 5, 5]),
+    'layer2.convolution_layer_1.bias':   torch.Size([20]),
+    'layer2.convolution_layer_2.weight': torch.Size([64, 20, 5, 5]),
+    'layer2.convolution_layer_2.bias':   torch.Size([64])
+}
+```
+
+**保存与加载模型**：`model.state_dict()`​ 最基础的用途是保存和加载模型，使用 `torch.save()`​ 保存，使用 `model.load_state_dict()`​ 加载
+
+```python
+# 保存
+torch.save(model.state_dict(), 'my_model.pth')
+
+# 加载（必须先创建相同结构的模型）
+model = MyModel()
+model.load_state_dict(torch.load('my_model.pth'))
+```
+
+**给另一个模型赋值**：如果两个模型结构完全一致（类定义相同），则可以直接赋值
+
+```python
+model1 = MyModel()
+model2 = MyModel()
+
+# 将 model1 的参数复制给 model2
+model2.load_state_dict(model1.state_dict())
+```
+
+**部分赋值给另一个模型（微调常用）** ：即使两个模型**不完全相同**，只要部分层的名字和形状匹配，也可以**选择性加载**：
+
+```python
+# 假设 model_pretrained 是一个大型预训练模型
+# model_new 是你的新模型，但共享部分结构（比如前面的卷积层）
+
+pretrained_dict = model_pretrained.state_dict()
+new_model_dict = model_new.state_dict()
+
+# 过滤出新模型中也存在的、且形状匹配的参数
+filtered_dict = {
+    k: v for k, v in pretrained_dict.items()
+    if k in new_model_dict and v.shape == new_model_dict[k].shape
+}
+
+# 更新新模型的 state_dict
+new_model_dict.update(filtered_dict)
+model_new.load_state_dict(new_model_dict)
+```
+
+---
 
 ## ResNet-18 网络结构解析
 
