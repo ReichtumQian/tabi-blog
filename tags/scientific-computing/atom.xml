@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="https://reichtumqian.pages.dev/feed_style.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh">
+    <tabi:metadata xmlns:tabi="https://github.com/welpo/tabi">
+        <tabi:base_url>https:&#x2F;&#x2F;reichtumqian.pages.dev</tabi:base_url>
+        <tabi:separator>
+            •
+        </tabi:separator>
+        <tabi:about_feeds>This is a web feed, also known as an Atom feed. Subscribe by copying the URL from the address bar into your newsreader</tabi:about_feeds>
+        <tabi:visit_the_site>Visit website</tabi:visit_the_site>
+        <tabi:recent_posts>Recent posts</tabi:recent_posts>
+        <tabi:last_updated_on>Updated on $DATE</tabi:last_updated_on>
+        <tabi:default_theme></tabi:default_theme>
+        <tabi:post_listing_date>date</tabi:post_listing_date>
+        <tabi:current_section>Scientific Computing</tabi:current_section>
+    </tabi:metadata><title>Reichtum's Blog - Scientific Computing</title>
+        <subtitle>Reichtum&#x27;s Blog</subtitle>
+    <link href="https://reichtumqian.pages.dev/tags/scientific-computing/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://reichtumqian.pages.dev/tags/scientific-computing/" rel="alternate" type="text/html"/>
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-01T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/scientific-computing/atom.xml</id><entry xml:lang="zh">
+        <title>论文阅读：PINNs for PTV</title>
+        <published>2025-10-01T00:00:00+00:00</published>
+        <updated>2025-10-01T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/lun-wen-yue-du-pinns-for-ptv/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/lun-wen-yue-du-pinns-for-ptv/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;ieeexplore.ieee.org&#x2F;document&#x2F;10522764&quot;&gt;Physics-Informed Neural Networks Enhanced Particle Tracking Velocimetry: An Example for Turbulent Jet Flow | IEEE Journals &amp;amp; Magazine | IEEE Xplore&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Particle Image Velocimetry&lt;&#x2F;strong&gt;: An optical measurement technique that determines an instantaneous velocity field by statistically analyzing the displacement of dense concentrations of tracer particles within interrogation regions over a short time interval.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PIV 追踪一块区域（interrogation window）的整体移动&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Particle Tracking Velocimetry&lt;&#x2F;strong&gt;: An optical measurement technique that determines the pathways and velocities of individual tracer particles by identifying and tracking each particle over a sequence of images.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PTV 追踪单个粒子的精确轨迹&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Limitation of PIV&lt;&#x2F;strong&gt;: PIV is generally limited by the size of the interrogation window and the number density of the recorded particles.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Limitation of PTV&lt;&#x2F;strong&gt;: The sparsity of the seeding particles also limits the spatial resolution achievable by PTV.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;pinns&quot;&gt;PINNs&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Velocities&lt;&#x2F;strong&gt;: Assuming the velocities obtained from PIV&#x2F;PTV are denoted as&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{D}:\{\mathbf{x}^n,t^n,\mathbf{u}^n\}_{n=1}^{N_v},
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\mathbf{x}$ and $t$ are the space and time coordinates, $\mathbf{u}$ is the velocity, $N_v$ denotes the total number of vectors in the spatiotemporal domain $\Omega \times T$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;PINNs&lt;&#x2F;strong&gt;: A neural network $\mathcal{NN}$ is used to approximate the solution of the flow field&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+(\mathbf{u},p)=\mathcal{NN}(\mathbf{x},t,\Theta).
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\mathcal{NN}$ receives the coordinates as input and $\Theta$ is the learnable parameters in the network. $\mathbf{u}(\mathbf{x}, t, \Theta)$ and $p(\mathbf{x}, t, \Theta)$ are the velocity and pressure fields. In general, $\mathcal{NN}$ is instantiated by using a feed-forward fully connected network.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-pinns-for-ptv&#x2F;assets&#x2F;image-20251001101017-vg8tb29.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Data Loss&lt;&#x2F;strong&gt;: We apply the velocity data $\mathcal{D}$ as labels and minimize the mean squared loss:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{L}_{\mathrm{data}}(\Theta)=\sum_{(u,v,w)}\sum_{n=1}^{N}\parallel\mathbf{u}_{\mathrm{data}}^{n}-\mathbf{u}(\mathbf{x}^{n},t^{n},\Theta)\parallel_{2}^{2}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;This penalizes the mismatch between the data $\mathbf{u}_{\text{data}}^n$ and the network output $\mathbf{u}(\mathbf{x}^n, t^n, \Theta)$, where $\sum_{(u,v,w)}$ dentoes the summation over three velocity components, $\sum_{n=1}^{N}$ is the summation over different data points, and $N$ is the batch size for one training iteration.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Residual Loss&lt;&#x2F;strong&gt;: Another loss function penalizing the residuals of the governing equations is introduced:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{L}_{\mathrm{res}}(\Theta)=\sum_{i}\sum_{n=1}^{N}\parallel\mathbf{e}_{i}(\mathbf{x}^{n},t^{n},\Theta)\parallel_{2}^{2}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\mathbf{e}$ includes the residuals of the governing equations for flow motion. For instance, $\mathbf{e}_i$ can be&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+&amp;amp; e_{1}=u_t+(uu_x+vu_y+wu_z)+p_x-1&#x2F;\mathrm{Re}(u_{xx}+u_{yy}+u_{zz}) \\
+&amp;amp; e_{2}=v_t+(uv_x+vv_y+wv_z)+p_y-1&#x2F;\mathrm{Re}(v_{xx}+v_{yy}+v_{zz}) \\
+&amp;amp; e_{3}=w_t+(uw_x+vw_y+ww_z)+p_z-1&#x2F;\mathrm{Re}(w_{xx}+w_{yy}+w_{zz}) \\
+&amp;amp; e_{4}=u_x+v_y+w_z
+\end{aligned}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Boundary Condition&lt;&#x2F;strong&gt;: If the boundary conditions of the investigated flow are known, we have&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{L}_{\mathrm{bcs}}(\Theta)=\sum_{(u,v,w)}\sum_{n=1}^{N}\|\mathbf{u}_{\mathrm{bcs}}^{n}-\mathbf{u}(\mathbf{x}^{n},t^{n},\Theta)\|_{2}^{2},
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\{\mathbf{x}^n,t^n,\mathbf{u}_{\mathrm{bcs}}^n\}_{n=1}^{N_b}$ denote the Dirichlet boundary conditions on $\mathbf{x} \in \partial \Omega$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Overall Loss Function&lt;&#x2F;strong&gt;: The loss function of PINN can be defined as&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{L}(\Theta)=\lambda_d\mathcal{L}_{\mathrm{data}}+\lambda_r\mathcal{L}_{\mathrm{res}}+\lambda_b\mathcal{L}_{\mathrm{bcs}}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $\lambda_\ast$ are the weighting coefficients used to balance different terms in the loss function.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-pinns-for-ptv&#x2F;assets&#x2F;image-20251001101918-ifo0ikc.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;generic-workflow-in-real-experiments&quot;&gt;Generic Workflow in Real Experiments&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Preprocessing&lt;&#x2F;strong&gt;: This step is to prepare the training sets in a proper format as required for PINN training. The velocity vectors loaded from PIV&#x2F;PTV experiments are generally dimensionalized, so a nondimensionalization step is required:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathbf{x}^*=\frac{\mathbf{x}}{L},\quad\mathbf{u}^*=\frac{\mathbf{u}}{U},\quad t^*=\frac{t}{L&#x2F;U},\quad p^*=\frac{p}{\rho U^2},
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $L$ is the length scale and $U$ is the velocity scale. Then $\{\mathbf{x}^{*n},t^{*n},\mathbf{u}^{*n}\}_{n=1}^{N_v}$ will be used in the data loss. Given the kinematic viscosity of the fluid $\nu$, the Reynolds number is defined as&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathrm{Re}=\frac{\mathrm{UL}}{\nu}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;If the boundary conditions are known, we can extract the boundary points $\{\mathbf{x}^{*n},t^{*n}\}_{n=1}^{N_{b}}$ and the corresponding velocity $\{\mathbf{u}_{\mathrm{bcs}}^{*n}\}_{n=1}^{N_{b}}$. Eventually, the training data are composed of&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\{\mathbf{x}^{*n},t^{*n},\mathbf{u}^{*n}\}_{n=1}^{N_{v}},
+\quad
+\{\mathbf{x}^{*n},t^{*n}\}_{n=1}^{N_{r}},
+\quad
+\{\mathbf{x}^{*n},t^{*n},\mathbf{u}_{\mathrm{bcs}}^{*n}\}_{n=1}^{N_{b}}.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Postprecessing&lt;&#x2F;strong&gt;: We generate an Euler mesh by defining the dimensionless time interval $\mathrm{d}t$ and spacing step $\mathrm{d} \mathbf{x}$. The evaluation points are defined as $(\mathbf{x}_{\mathrm{grid}}^*,t_{\mathrm{grid}}^*)$. Note that the flow fields should be dimensionalized back to the original units:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+(\mathbf{u}^{*},p^{*}) &amp;amp; =\mathcal{NN}\left(\mathbf{x}_{\mathrm{grid}}^{*},t_{\mathrm{grid}}^{*}\right) \\
+\mathbf{u} &amp;amp; =\mathbf{u}^{*}\times U \\
+p &amp;amp; =p^{*}\times\rho U^{2}
+\end{aligned}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $(\mathbf{u}^{*},p^{*})$ are the dimensionless output of the last layer in the neural network and $(\mathbf{u},p)$ are the dimensional quantities which are used for visualization.&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry>
+</feed>
