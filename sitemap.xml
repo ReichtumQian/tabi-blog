@@ -99,6 +99,10 @@
         <lastmod>2025-09-29</lastmod>
     </url>
     <url>
+        <loc>https://reichtumqian.pages.dev/blog/lm-eval-ku-jian-jie/</loc>
+        <lastmod>2025-10-01</lastmod>
+    </url>
+    <url>
         <loc>https://reichtumqian.pages.dev/blog/lun-wen-yue-du-benchmarking-optimizers-for-large-language-model-pretraining-md/</loc>
         <lastmod>2025-09-13</lastmod>
     </url>
@@ -248,6 +252,9 @@
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/control-theory/</loc>
+    </url>
+    <url>
+        <loc>https://reichtumqian.pages.dev/tags/evaluation/</loc>
     </url>
     <url>
         <loc>https://reichtumqian.pages.dev/tags/fine-tuning/</loc>
