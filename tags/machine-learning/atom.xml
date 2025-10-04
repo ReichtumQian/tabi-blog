@@ -17,7 +17,158 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-29T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-04T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+        <title>论文阅读：Unlearning-Based Neural Interpretations</title>
+        <published>2025-10-04T00:00:00+00:00</published>
+        <updated>2025-10-04T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/lun-wen-yue-du-unlearning-based-neural-interpretations/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/lun-wen-yue-du-unlearning-based-neural-interpretations/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2410.08069&quot;&gt;[2410.08069] Unlearning-based Neural Interpretations&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Machine Unlearning&lt;&#x2F;strong&gt;: Unlearning concerns “forgetting” of a data-point for a trained model:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Exact Unlearning: Seeks indistinguishability guarantees between a model not trained on a sample and one that has unlearned. Provable exact unlearning is &lt;u&gt;only achieved under full re-training&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Approximate Unlearning: Unlearns with first&#x2F;second order gradient updates, achieving max-divergence bounds for single unlearning samples.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Perturbative Methods&lt;&#x2F;strong&gt;: Perturb inputs to change and explain outputs. These methods fail to give a global insight of the model’s decision function and are &lt;u&gt;highly unstable due to the reliance on local perturbations&lt;&#x2F;u&gt;. Different methods give &lt;u&gt;incongruent explanations&lt;&#x2F;u&gt; which cannot be acted on.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;因为局部扰动而高度不稳定，不同解释方法给出完全不同的解释。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Backpropagative Methods&lt;&#x2F;strong&gt;: These methods leverage &lt;u&gt;gradients of the output w.r.t. the input&lt;&#x2F;u&gt; for some given neuron activity of interest. However, gradients are &lt;u&gt;highly noise and locally sensitive&lt;&#x2F;u&gt;, they can only &lt;u&gt;crudely localize salient feature regions&lt;&#x2F;u&gt;.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Salient feature region 表示重要特征的部分，梯度噪声很大，且只能粗略定位&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Path-Based Attribution&lt;&#x2F;strong&gt;: This family of post-hoc attributions rely on a &lt;u&gt;baseline&lt;&#x2F;u&gt; – a “vanilla” image devoid of features, and a &lt;u&gt;path&lt;&#x2F;u&gt; – an often linear path from the featureless baseline to the target image. However, it comes with difficulties of defining an &lt;u&gt;unambiguously featureless baseline&lt;&#x2F;u&gt; and a &lt;u&gt;reliable path of increasing label confidence&lt;&#x2F;u&gt; without intermediate inflection points.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Post-hoc 表示事后的&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;notation&quot;&gt;Notation&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Input&#x2F;Feature Space: $\mathcal{X}\subset\mathbb{R}^{d_X}$, where $d_X$ is the number of pixels in an image.&lt;&#x2F;li&gt;
+&lt;li&gt;Output&#x2F;Label Space: $\mathcal{Y}\subset\mathbb{R}^{d_{Y}}$, where $d_Y$ is the number of classes.&lt;&#x2F;li&gt;
+&lt;li&gt;Model Space: $\mathcal{F}\subset\mathcal{Y}^{\mathcal{X}}$, and $F:x\mapsto(F_{1}(x),…,F_{d_{Y}}(x))$, where $F_c(x)$ is the probability score of class $c$.&lt;&#x2F;li&gt;
+&lt;li&gt;Attribution Methods: $\mathcal{A}: \{1,…,d_{X}\}\times\mathcal{F}\times\{1,…,d_{Y}\}\times\mathcal{X}\to\mathbb{R}$, where $\mathcal{A}(i,F,c,x)$ is the importance score of pixel $i$ of image $x$ for the prediction made by $F_c$. For convenience, we use the shorthand $\mathcal{A}_i(x)$ to refer to the attributed saliency score of a pixel $i$ for a specific class $c$.&lt;&#x2F;li&gt;
+&lt;li&gt;Linear Path Feature: $\gamma(x^{\prime},x,\alpha):\mathbb{R}^{d_{\mathcal{X}}}\times\mathbb{R}^{d_{\mathcal{X}}}\times[0,1]\to\mathbb{R}^{d_{\mathcal{X}}}$, where $\gamma=(1-\alpha)x^{\prime}+\alpha x$ and employ shorthands $\gamma(0)=x^{\prime},\gamma(1)=x$.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;limitation-of-existing-gradient-based-methods&quot;&gt;Limitation of Existing Gradient-Based Methods&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Limitation of Simple Gradient&lt;&#x2F;strong&gt;: The simple gradient $\mathcal{A}_{i}^{\mathrm{SG}}(x)=\nabla_{x_{i}}F_{c}(x)$ can be effciently computed but it &lt;u&gt;encounters output saturation&lt;&#x2F;u&gt; when activation functions like ReLU and Sigmoid are used, leading to &lt;u&gt;zero gradients even for important features&lt;&#x2F;u&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;DeepLIFT&lt;&#x2F;strong&gt;: DeepLIFT reduces saturation by introducing a “reference state” and &lt;u&gt;comparing each neuron’s activations to that of the baseline&lt;&#x2F;u&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Integrated Gradients (IG)&lt;&#x2F;strong&gt; : Integrated gradients similarly utilizes a reference, &lt;u&gt;black image&lt;&#x2F;u&gt; and computes the integral of gradients interpolated on a straight line between the image and the baseline:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\mathcal{A}_{i}^{\mathrm{IG}}(x)=(x_{i}-x_{i}^{\prime})\int_{\alpha=0}^{1}\nabla_{x_{i}}F_{c}\left(x^{\prime}+\alpha(x-x^{\prime})\right)\mathrm{d}\alpha
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where $(x_{i}-x_{i}^{\prime})$ is the difference between the real pixel and the baseline pixel, and $x^{\prime}+\alpha(x-x^{\prime})$ is the line interpolation.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Limitation of IG&lt;&#x2F;strong&gt;: The soundness of IG depends on two assumptions–a &lt;u&gt;baseline represents the “absence” of predictive features&lt;&#x2F;u&gt;, and &lt;u&gt;has stable path features&lt;&#x2F;u&gt;.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Research suggests that when a black image is used, the &lt;u&gt;path features are ambiguous&lt;&#x2F;u&gt;, where extrema of the model confidencs lie along the integration path instead of at the endpoints of the baseline.&lt;&#x2F;li&gt;
+&lt;li&gt;Models trained with image augmentations (e.g., color jittering, rescaling, gaussian blur) yield equivalent or &lt;u&gt;even higher confidences for blurred and lightly-noised baselines&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;两个核心假设：（1）黑色图片真的什么特征都不表示（2）从黑图渐变到真实图片过程中，模型的信心是单调递增的&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Post-Hoc Biased are Imposed&lt;&#x2F;strong&gt;: Static baseline functions (e.g., black, blurred, noised) implicitly assume that &lt;u&gt;similar features (e.g., dark, smooth, high-frequency) are irrelevant for model prediction&lt;&#x2F;u&gt;. For example, IG with a black baseline implies that “near-black features are unimportant”, since the term $(x_i-x_i^\prime)$ is small and requires a large gradient $\nabla_{x_i} F_c(\cdot)$.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Experiments&lt;&#x2F;strong&gt;: The color biases are not present naturally in the pre-trained model but rather injected implicitly by a suboptimal choice of static baseline.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Figures 2, 3: Darker features belonging to the object-of-interest cannot be reliably identified.&lt;&#x2F;li&gt;
+&lt;li&gt;Figure 4: IG with a blurred baseline fails to attribute blurred inputs due to saturation and overly smoothed image textures.&lt;&#x2F;li&gt;
+&lt;li&gt;Figure 5: Visualize how a noised IG baseline encounters high-frequency noise and outputs irregular, high-variance attribution scores.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-unlearning-based-neural-interpretations&#x2F;assets&#x2F;image-20251003085650-pz03jgr.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20251002153529-xyta6h9.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Figure 3: The left half is the experiment after brightening while the right after saturation. The middle includes the original images.&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;uni-unlearning-based-neural-interpretations&quot;&gt;UNI: Unlearning-Based Neural Interpretations&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Desirable Baseline&lt;&#x2F;strong&gt;: For every given task-model-image triad, a well-chosen baseline should be:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Image-Specific: Be connected via a &lt;u&gt;path feature of low curvature (smooth) to the original image&lt;&#x2F;u&gt;, rather than unchanged black images.&lt;&#x2F;li&gt;
+&lt;li&gt;Reflect only the model’s Predictive Biases: &lt;u&gt;Salient image features should be excluded&lt;&#x2F;u&gt; from the baseline.&lt;&#x2F;li&gt;
+&lt;li&gt;Less Task-Informative than the Original Image: Interpolating from the baseline towards the input image should yield &lt;u&gt;a path of increasing predictive confidence&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;UNI Pipeline&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Unlearn predictive information in the model space&lt;&#x2F;li&gt;
+&lt;li&gt;Use activation-matching between unlearned and trained models to mine a featureless baseline in the image space&lt;&#x2F;li&gt;
+&lt;li&gt;Interpolate along the low-curvature, conformant and consistent path from baseline to image to compute reliable explanations in the attributions space&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;第一步：反学习，让模型忘掉怎么识别特定图片，生成一个针对特定图片的【失忆模型】。具体的方式是做【梯度上升】。&lt;&#x2F;p&gt;
+&lt;p&gt;第二步：使用【激活值匹配】，生成一张图片，使得【原版模型的激活值】和【失忆模型的激活值】相同，作为 baseline。具体的方式是不断地寻找图片，计算【原模型和失忆模型的 KL 散度】，然后做【梯度下降】。&lt;&#x2F;p&gt;
+&lt;p&gt;第三步：在 baseline 和原始图片中插值，获得光滑的路径。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-unlearning-based-neural-interpretations&#x2F;assets&#x2F;image-20251003085707-nbpqit1.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-unlearning-based-neural-interpretations&#x2F;assets&#x2F;image-20251003090156-u9mqbl7.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Desirable Path Features&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Proximity (邻近性): We aim for a smooth transition between absence and presence of features, and this intuitively cannot be achieved if the baseline and input are too far away. In UNI, we bound the distant $\|x - x^\prime\|$ to a certain value $\epsilon$.&lt;&#x2F;li&gt;
+&lt;li&gt;Low Curvature: Assume that the function $g:\alpha\in[0,1]\mapsto {\nabla}F_{c}\left(x^{{\prime}}+\alpha(x-x^{\prime})\right)$ is $\mathcal{C}^1$ on the segment $[x^\prime, x]$, the error in the Riemann approximation of the attribution is&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\left|(x_i-x_i^{\prime})\int_{\alpha=0}^1g\left(\alpha\right)d\alpha-\frac{(x_i-x_i^{\prime})}{B}\sum_{k=1}^Bg\left(\frac{k}{B}\right)\right|\leq\frac{M||x-x^{\prime}||^2}{2B}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;where the lhs indicates the numerical integration error, while $M$ is proportional to the curvature, and $B$ is number of steps. A lower value of the constant $M$ implies a lower error in the integration calculation.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Monotonic: Intuitively, the path from the “featureless” baseline to the input image should be monotonically increasing in output class confidence. The unlearning mechanism naturally meets this condition.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;assets&#x2F;image-20251004092624-945zj5b.png&quot; alt=&quot;image&quot;&gt;
+  &lt;figcaption&gt;Illustration of unlearning: The x-axis is the input and y-axis is the output. &amp;amp;quot;Data points&amp;amp;quot; are the objective to fit, the original model is mixed by three gaussians functions, &amp;amp;quot;model&amp;amp;quot; indicates the output of the model. (a) shows the model after one gradient ascent step on the datapoint (2,5). (b) shows the model trained on the three datapoints. The path between UNI baseline and the image is highlighted by arrows in (b).&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;​
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;experiments&quot;&gt;Experiments&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Faithfulness&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;We report the MuFidelity scores, i.e., the faithfulness of an attribution function $\mathcal{A}$, to a model $F$, at a sample $x$, for a subset of features of size $|S|$, given by&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\mu_{f}(F,\mathcal{A};x) =
+\mathrm{corr}_{S\in
+\begin{pmatrix}
+[d] \\
+|S|
+\end{pmatrix}}\left(\sum_{i\in S}\mathcal{A}(i,F,c,x),F_{c}(x)-F_{c}(x_{[x_{s}=\bar{x}_{s}]})\right)
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$\sum_{i\in S}\mathcal{A}(i,F,c,x)$ 为归因方法的【预测重要性】，$F_{c}(x)-F_{c}(x_{[x_{s}=\bar{x}_{s}]})$ 为像素的【实际影响力】&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-unlearning-based-neural-interpretations&#x2F;assets&#x2F;image-20251004093218-x8zylow.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;We also report deletion and insertion scores, which measures the decrease (deletion) or increase (insertion) of a model’s output confidence as salient pixels are removed or inserted.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-unlearning-based-neural-interpretations&#x2F;assets&#x2F;image-20251004095016-nuafpb7.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-unlearning-based-neural-interpretations&#x2F;assets&#x2F;image-20251004095030-rh2b43l.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Robustness&lt;&#x2F;strong&gt;: We design norm-bounded attacks to miximize the disagreement in attributions while constraining the prediction label unchanged.&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\begin{gathered}
+\delta_{f}^{*}=\operatorname{arg}\operatorname*{max}_{\|\delta_{f}\|_{p}\leq\varepsilon_{f}}\frac{1}{d_{X}}\sum_{i=1}^{d_{X}}d\left(\mathcal{A}(i,F,c,x),\mathcal{A}(i,F,c,x+\delta_{f})\right) \\
+\mathrm{subject~to}\quad\arg\operatorname*{max}_{c^{\prime}}F_{c^{\prime}}(x)=\arg\operatorname*{max}_{c}F_{c^{\prime}}(x+\delta_{f})=c
+\end{gathered}
+$$&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;热力图的鲁棒性指的是当输入图片增加一个微小到人眼无法识别的变化时，好的解释方法的热力图保持稳定。这里采用了对抗攻击（adversarial attacks）的方法，在不改变模型最终预测结果的前提下，最大化改变归因热力图。&lt;&#x2F;p&gt;
+&lt;p&gt;Table 5 展示了攻击前和攻击后两个热力图的相关性&lt;&#x2F;p&gt;
+&lt;p&gt;Table 6 展示了攻击前最重要的 1000 个 pixel 和攻击后的重合比例&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-unlearning-based-neural-interpretations&#x2F;assets&#x2F;image-20251004095304-j2uwyll.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Stability&lt;&#x2F;strong&gt;: We compare UNI and other method’s sensitivity to Riemann approximation noise&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;IG 类方法从 baseline 出发通过多个 step 到达原始图片，理论上 step 越多越精确，但如果不稳定，则【走多少步】和【从哪个 baseline 出发】会影响最终热力图结果。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-unlearning-based-neural-interpretations&#x2F;assets&#x2F;image-20251004095538-9nd424y.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>Learning Dynamics of LLM Fine-Tuning</title>
         <published>2025-09-29T00:00:00+00:00</published>
         <updated>2025-09-29T00:00:00+00:00</updated>
