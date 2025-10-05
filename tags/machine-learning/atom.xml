@@ -17,7 +17,71 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/machine-learning/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-04T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-05T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/machine-learning/atom.xml</id><entry xml:lang="zh">
+        <title>论文阅读：SFT Memorizes, RL Generalizes</title>
+        <published>2025-10-05T00:00:00+00:00</published>
+        <updated>2025-10-05T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/lun-wen-yue-du-sft-memorizes-rl-generalizes/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/lun-wen-yue-du-sft-memorizes-rl-generalizes/</id>
+        
+            <content type="html">&lt;blockquote&gt;
+&lt;p&gt;Original Paper: &lt;a href=&quot;https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2501.17161&quot;&gt;[2501.17161] SFT Memorizes, RL Generalizes: A Comparative Study of Foundation Model Post-training&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Memorization and Generalization in LLM&#x2F;VLM&lt;&#x2F;strong&gt;: Memorization can manifest as the model memorizing the training data, while generalization reflects the divergence between the model’s output distribution and the pre-training data distribution.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251004224627-gt5hx08.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Scaling up Inference-Time Compute&lt;&#x2F;strong&gt;: Recent works demonstrate that fine-tuning verifiers during inference improves model accuracy. In addition, “scaling laws” for inference-time compute is revealed.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;We integrate inference-time verification into a multi-turn RL formulation.&lt;&#x2F;li&gt;
+&lt;li&gt;We examine the impact of inference-time verification on RL generalization.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在 RL 中使用 verifier，且发现增加推理时间&#x2F;计算能显著提升泛化性。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;evaluation-tasks&quot;&gt;Evaluation Tasks&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;The Generalization Points Environment&lt;&#x2F;strong&gt;: This task is designed to evaluate generalization of arithmetic reasoning.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;State: Each state of the environment contains $4$ cards, described as text (in the GP-L variant) or presented as an image (in the GP-VL variant)&lt;&#x2F;li&gt;
+&lt;li&gt;Goal: The goal is to produce an equation that equals to a target number ($24$ by default).&lt;&#x2F;li&gt;
+&lt;li&gt;Rule Variations: We introduce rule variations to study whether the model learns or simply memorizes. These variations consist of interpreting the symbols &lt;u&gt;‘J’, ‘Q’, and ‘K’ either as ‘11’, ‘12’, and ‘13’ respectively, or all as the same number ‘10’&lt;&#x2F;u&gt;. We &lt;u&gt;post-train the model using one rule, and evaluate using a different rule&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Visual Variations: Since the major visual challenge is to recognize the number of each card, agnostic to the color of the cards. We &lt;u&gt;train the model using cards of one color, then test OOD performance using the other color&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251004225453-0emuxh4.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;The V-IRL Environment&lt;&#x2F;strong&gt;: We utilize the V-IRL environment to study spatial reasoning ability in an open-world navigation domain. We consider two versions of the environment, one (V-IRL-L) consists of pure language description, and another (V-IRL-VL) that includes vision-language input.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rule Variations: We consider two distinct action space. The first variant utilizes an &lt;u&gt;absolute orientation action space&lt;&#x2F;u&gt;, which includes ‘north’, ‘northest’,… The second variant employs a relative orientation action space containing ‘left’, ‘right’, ‘slightly left’ …&lt;&#x2F;li&gt;
+&lt;li&gt;Visual Variations: The key visual challenge is to recognize landmarks from the visual observations. So we evaluate its performance in different locations.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251004230255-8cdgbhi.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;results&quot;&gt;Results&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Experimental Setup&lt;&#x2F;strong&gt;: We evaluate on &lt;code&gt;GeneralPoints&lt;&#x2F;code&gt;​ and &lt;code&gt;V-IRL&lt;&#x2F;code&gt;​, each of which has a pure language (-L) and a vision-language (-VL) variant. We consider the results on in-distribution (ID) and out-of-distribution (OOD) generalization.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;GeneralPoints&lt;&#x2F;code&gt;: The ID case treats all ‘J’, ‘Q’, ‘K’ as 10, and the OOD cases interprets them as 11, 12, and 13.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;V-IRL&lt;&#x2F;code&gt;: The ID case adopts the absolute orientation, and the OOD case uses the relative orientation.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;RL Generalizes, SFT Memorizes&lt;&#x2F;strong&gt;: As shown in the figures, RL consistently improves OOD performance on all tasks. In contrast, SFT consistently exhibits performance degradation across all OOD evaluations on all tasks.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251004231253-ir6z6bk.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251005094611-70x89u7.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;RL Generalizes in Visual OOD Tasks&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;GeneralPoints&lt;&#x2F;code&gt;: We train the VLM using the black suits and test the OOD performance on the red suits.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;V-IRL&lt;&#x2F;code&gt;: We train the model on routes collected in New York City and evaluate it on the original &lt;code&gt;V-IRL&lt;&#x2F;code&gt;​ VLN mini benchmark (containing routes from various cities world-wide).&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251005100115-g412kvv.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Scaling RL Improves Visual Recognition Accuracy in VLM Training&lt;&#x2F;strong&gt;: We observe that VLM’s visual recognition accuracy largely affects the overall performance. In addition, scaling up RL compute also improves visual recognition accuracy.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251005100342-rw4iqis.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;SFT is Necessary for RL Training when the Backbone Model Does not Follow Instructions&lt;&#x2F;strong&gt;: The figure shows that without SFT, all end-to-end RL runs fail to improve. We observe that without SFT, the base model suffers from poor instruction following capability.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251005101042-aa5fwzo.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Scaling up Verification Improves Generalization&lt;&#x2F;strong&gt;: We observe that RL generalizes better with more verification steps.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-sft-memorizes-rl-generalizes&#x2F;assets&#x2F;image-20251005103103-xqt15vz.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>论文阅读：Unlearning-Based Neural Interpretations</title>
         <published>2025-10-04T00:00:00+00:00</published>
         <updated>2025-10-04T00:00:00+00:00</updated>
