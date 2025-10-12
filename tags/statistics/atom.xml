@@ -17,7 +17,88 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/statistics/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/statistics/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-18T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/statistics/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-12T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/statistics/atom.xml</id><entry xml:lang="zh">
+        <title>期望、方差、协方差</title>
+        <published>2025-10-12T00:00:00+00:00</published>
+        <updated>2025-10-12T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/qi-wang-fang-chai-xie-fang-chai/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/qi-wang-fang-chai-xie-fang-chai/</id>
+        
+            <content type="html">&lt;p&gt;期望、方差、协方差是统计中的重要概念，在机器学习理论中很常用。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;sui-ji-bian-liang-de-qi-wang-fang-chai-xie-fang-chai&quot;&gt;随机变量的期望、方差、协方差&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;期望（Expected Value）&lt;&#x2F;strong&gt; ：期望是&lt;u&gt;随机变量的长期平均值&lt;&#x2F;u&gt;。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;若 $X$ 是离散的，可能的取值为 $x_1, x_2, \cdots$，对应概率为 $P(X = x_i)$，则&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\mathbb{E}[X]=\sum_ix_iP(X=x_i).
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;若 $X$ 是连续随机变量，其概率密度函数为 $f(x)$，则&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\mathbb{E}[X]=\int_{-\infty}^{\infty}xf(x)\mathrm{d}x
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;方差（Variance）&lt;&#x2F;strong&gt; ：方差衡量&lt;u&gt;单个随机变量在期望值附近的波动程度&lt;&#x2F;u&gt;，其定义为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+Var(X)=\mathbb{E}[(X-\mathbb{E}[X])^2].
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;更实用的计算公式为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+Var(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;协方差（Covariance）&lt;&#x2F;strong&gt; ：协方差衡量两个随机变量之间的线性关系&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+Cov(X,Y)=\mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;若 $Cov(X,Y) &amp;gt; 0$：$X$ 与 $Y$ 倾向于相同方向变化，当 $X$ 取值大于期望值时，$Y$ 也趋于取值大于期望值。$Cov(X,Y) &amp;lt; 0$ 则刚好相反。&lt;&#x2F;li&gt;
+&lt;li&gt;若 $Cov(X,Y) = 0$： 说明 $X$ 和 $Y$ 之间没有线性关系。如果两个随机变量相互独立，则协方差必定为 $0$。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;sui-ji-xiang-liang-de-xie-fang-chai-ju-zhen&quot;&gt;随机向量的协方差矩阵&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;协方差矩阵（Covariance Matrix）&lt;&#x2F;strong&gt; ：给定随机向量 $\mathbf{x} = [X_1, X_2, \cdots, X_n]$，其协方差矩阵衡量了&lt;u&gt;各个元素之间的方差和协方差关系&lt;&#x2F;u&gt;：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\Sigma=\mathbb{E}[(\mathbf{X} - \mathbb{E}(\mathbf{X})(\mathbf{X} - \mathbb{E}(\mathbf{X})^T]
+=\mathbb{E}[(\mathbf{X}-\boldsymbol{\mu})(\mathbf{X}-\boldsymbol{\mu})^T]
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\Sigma=
+\begin{pmatrix}
+Var(X_1) &amp;amp; Cov(X_1,X_2) &amp;amp; \cdots &amp;amp; Cov(X_1,X_n) \\
+Cov(X_2,X_1) &amp;amp; Var(X_2) &amp;amp; \cdots &amp;amp; Cov(X_2,X_n) \\
+\vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+Cov(X_n,X_1) &amp;amp; Cov(X_n,X_2) &amp;amp; \cdots &amp;amp; Var(X_n)
+\end{pmatrix}
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;对角线元素：各个随机变量自身的方差。&lt;&#x2F;li&gt;
+&lt;li&gt;非对角线元素：不同变量两两之间的协方差。&lt;&#x2F;li&gt;
+&lt;li&gt;对称性：协方差矩阵一定是对称矩阵，且一定是&lt;u&gt;半正定&lt;&#x2F;u&gt;的。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;二次型&lt;&#x2F;strong&gt; &lt;strong&gt;$\mathbf{z}^T \Sigma \mathbf{z}$&lt;&#x2F;strong&gt;：考虑用向量 $\mathbf{z}$ 对随机向量 $X$ 做线性组合，得到新的随机变量 $W$：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+W = \mathbf{z}^T \mathbf{X} = z_1X_1 + \cdots + z_nX_n.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;此时 $\mathbf{z}^T \Sigma \mathbf{z}$ 恰好表示了 $W$ 的方差 $Var(W)$：&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+Var(W) &amp;amp; =Var(\mathbf{z}^T\mathbf{X}) \\
+&amp;amp; =\mathbb{E}[(\mathbf{z}^T\mathbf{X}-\mathbb{E}[\mathbf{z}^T\mathbf{X}])^2] \\
+&amp;amp; =\mathbb{E}[(\mathbf{z}^T\mathbf{X}-\mathbf{z}^T\mathbb{E}[\mathbf{X}])^2] \\
+&amp;amp; =\mathbb{E}[(\mathbf{z}^T(\mathbf{X}-\boldsymbol{\mu}))^2] \\
+&amp;amp; =\mathbb{E}[\mathbf{z}^T(\mathbf{X}-\boldsymbol{\mu})(\mathbf{X}-\boldsymbol{\mu})^T\mathbf{z}] \\
+&amp;amp; =\mathbf{z}^T\mathbb{E}[(\mathbf{X}-\boldsymbol{\mu})(\mathbf{X}-\boldsymbol{\mu})^T]\mathbf{z} \\
+&amp;amp; =\mathbf{z}^T\Sigma\mathbf{z}
+\end{aligned}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>Approximate KL Divergence using Fisher Information Matrix</title>
         <published>2025-09-18T00:00:00+00:00</published>
         <updated>2025-09-18T00:00:00+00:00</updated>
