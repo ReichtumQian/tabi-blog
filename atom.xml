@@ -17,7 +17,44 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-12T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-13T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+        <title>梯度、黑塞矩阵</title>
+        <published>2025-10-13T00:00:00+00:00</published>
+        <updated>2025-10-13T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/ti-du-hei-sai-ju-zhen/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/ti-du-hei-sai-ju-zhen/</id>
+        
+            <content type="html">&lt;p&gt;‍&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;梯度&lt;&#x2F;strong&gt;：考虑多变量函数 $f(\mathbf{x})$，其中 $\mathbf{x} = (x_1, x_2, \cdots, x_n)$，其梯度为&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\nabla f=
+\begin{bmatrix}
+\frac{\partial f}{\partial x_1} \\
+\frac{\partial f}{\partial x_2} \\
+\vdots \\
+\frac{\partial f}{\partial x_n}
+\end{bmatrix}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;黑塞矩阵&lt;&#x2F;strong&gt;：考虑多变量函数 $f(\mathbf{x})$，黑塞矩阵描述了梯度自身如何随着输入 $\mathbf{x}$ 的变化而变化&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+H=
+\begin{bmatrix}
+\frac{\partial^2f}{\partial x_1^2} &amp;amp; \frac{\partial^2f}{\partial x_1\partial x_2} &amp;amp; \cdots &amp;amp; \frac{\partial^2f}{\partial x_1\partial x_n} \\
+\frac{\partial^2f}{\partial x_2\partial x_1} &amp;amp; \frac{\partial^2f}{\partial x_2^2} &amp;amp; \cdots &amp;amp; \frac{\partial^2f}{\partial x_2\partial x_n} \\
+\vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+\frac{\partial^2f}{\partial x_n\partial x_1} &amp;amp; \frac{\partial^2f}{\partial x_n\partial x_2} &amp;amp; \cdots &amp;amp; \frac{\partial^2f}{\partial x_n^2}
+\end{bmatrix}
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;对角元素 $\frac{\partial^2 f}{\partial x_i^2}$：表示函数沿着单个坐标轴 $x_i$ 的曲率，这个值越大说明函数在 $x_i$ 维度上是高度弯曲的，梯度第 $i$ 个分量会迅速变化。&lt;&#x2F;li&gt;
+&lt;li&gt;非对角元素 $\frac{\partial^2 f}{\partial x_i \partial x_j}$：表示不同输入维度的相互影响，即当在 $x_j$ 方向移动时，函数在 $x_i$ 方向的斜率如何变化。如果值很大，则说明 $x_j$ 方向的移动对 $x_i$ 的方向影响很大。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>期望、方差、协方差</title>
         <published>2025-10-12T00:00:00+00:00</published>
         <updated>2025-10-12T00:00:00+00:00</updated>
