@@ -17,7 +17,190 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-13T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-20T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/atom.xml</id><entry xml:lang="zh">
+        <title>论文阅读：LiNeS Post-Training Layer Scaling Prevents Forgetting and Enhances Model Merging</title>
+        <published>2025-10-20T00:00:00+00:00</published>
+        <updated>2025-10-20T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md/</id>
+        
+            <content type="html">&lt;p&gt;‍&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Model Merging&lt;&#x2F;strong&gt;: Combine avaliable checkpoints, &lt;u&gt;avoiding the costly process of joint trade-offs&lt;&#x2F;u&gt;, such as the forgetting of previously acquired knowledge. However, merging checkpoints fine-tuned on different tasks can lead to &lt;u&gt;significant performance degradation&lt;&#x2F;u&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Catastrophic Forgetting Mitigation&lt;&#x2F;strong&gt;: Many works propose:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Regularizing the fine-tuning process&lt;&#x2F;li&gt;
+&lt;li&gt;Leveraging the insight that shallow layers capture generalizable representations, and applying lower learning rate to the shallow layers.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;However, &lt;u&gt;modifying the fine-tuning process can be complex and computationally expensive&lt;&#x2F;u&gt;. Model editing and model merging methods that &lt;u&gt;directly edit the checkpoints in the weight space&lt;&#x2F;u&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Drawbacks of Existing Methods&lt;&#x2F;strong&gt;: Most model merging methods &lt;u&gt;overlook the insight that shallow layers should remain close to their pre-trained weights to avoid losing the general representations&lt;&#x2F;u&gt; they encode.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Contribution of This Work&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;We propose LiNeS, a post-training editing technique that &lt;u&gt;preserves the zero-shot generalization of pre-trained models&lt;&#x2F;u&gt; while &lt;u&gt;retaining fine-tuned knowledge&lt;&#x2F;u&gt; by applying layer-wise scaling on parameter updates.&lt;&#x2F;li&gt;
+&lt;li&gt;LiNeS significantly enhances multi-task model merging baselines.&lt;&#x2F;li&gt;
+&lt;li&gt;LiNeS can be applied to enhance existing weight interpolation methods.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Wight Interpolation 是 Model Merge 的一种技术&#x2F;方法。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;related-work&quot;&gt;Related Work&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Representation Collapse and Regularized Fine-Tuning&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pre-trained models &lt;u&gt;exhibit strong zero-shot performance&lt;&#x2F;u&gt; across diverse data distribution due to the &lt;u&gt;robust and transferable feature representations&lt;&#x2F;u&gt; learned during pre-training.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Feature representation：深度学习模型一般不会直接处理原始数据，而是通过一系列计算将原始数据转换为利于理解的内部表示（Feature Representation）。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;However, fine-tuning on specific tasks often &lt;u&gt;harms the zero-shot generalization performance&lt;&#x2F;u&gt; on distributions different from the fine-tuning domain. This degradation arises from the &lt;u&gt;distortion of pre-trained feature during fine-tuning&lt;&#x2F;u&gt;. A phenomenon referred to as &lt;u&gt;&lt;em&gt;representation collapse&lt;&#x2F;em&gt;&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Modifying the fine-tuning process is far more computationally expensive compared to post-training merging methods.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Weight Interpolation and Model Merging&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;It is shown that two solutions derived from &lt;u&gt;separate training runs can be connected by nonlinear paths of low loss&lt;&#x2F;u&gt;. Linear mode connectivity extended the paths to the linear case.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;原本我们以为从通过不同的起点（随机初始化）出发，最终到达的两个模型（解）是相互隔离的。但是事实上存在一条 loss 很小的路径连接这两个解。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;These insights enabled the transfer of the benefits regarding &lt;u&gt;robustness output ensembles to weight ensembles&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Output Ensembles：把同个问题分别询问多个模型，综合它们的答案来得到最终结果&lt;&#x2F;p&gt;
+&lt;p&gt;Weight Ensembles：不再需要保留多个模型，而是直接合并成一个模型&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;These findings can be leveraged to improve performance on &lt;u&gt;single-task, out-of-distribution&lt;&#x2F;u&gt;, multi-task and multi-objective alignment settings.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;单个任务上训练多个模型合并起来能得到更好的模型，多个任务合并起来能获得多任务的模型。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Several methods have tried to merge by preserving the important parameters defined via the Fisher Information Matrix, heuristics…&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如何合并呢：简单加权肯定不行，因为有时候会直接抵消一些特征。因此有很多改进方法，例如 Fisher Information Matrix、Heuristics 启发式算法等&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Recent works use gradient descent to learn the &lt;u&gt;layer-specific merging coefficients&lt;&#x2F;u&gt; per task, e.g., Ada-merging.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;学习如何合并，每一层、每个任务都学习一个独特的合并系数&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;post-training-layer-wise-scaling-mitigates-forgetting&quot;&gt;Post-Training Layer-Wise Scaling Mitigates Forgetting&lt;&#x2F;h2&gt;
+&lt;p&gt;We present the key insight of this work: Scaling down the updates of shallow layer after fine-tuning can &lt;u&gt;mitigate catastrophic forgetting&lt;&#x2F;u&gt;, &lt;u&gt;restore zero-shot generalization&lt;&#x2F;u&gt;, &lt;u&gt;preserving performance on the target task&lt;&#x2F;u&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Notation&lt;&#x2F;strong&gt;: We consider a pre-trained model $\theta_0 \in \mathbb{R}^N$. Fine-tuning on a specific task $t$ results in the fine-tuned weights $\theta_t$. The &lt;u&gt;task vector&lt;&#x2F;u&gt; or residual for task $t$ is defined as&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\tau_t:= \theta_t - \theta_0.
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Fine-Tuning Leads to Catastrophic Forgetting&lt;&#x2F;strong&gt;: Consider an $8$-task image classification problem. We fine-tune a CLIP ViT-B&#x2F;32 model on each task, measuring performance on the fine-tuned task (target task) and the remaining $7$ tasks (control tasks).&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251018001650-i86x626.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Shallow-Layer Updates Impact Minimally on Target Task Accuracy&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Most parameter updates during fine-tuning are &lt;u&gt;redundant&lt;&#x2F;u&gt;, as similar performance is &lt;u&gt;achievable without updating most pre-trained weights&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Prior work shows that &lt;u&gt;task-specific features are often concentrated in deeper layers of the network&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;We apply a scaling factor to the updates to the $\ell$-th layer $\tau^{(\ell)}$,&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\lambda^{(\ell)}=\gamma+(1-\gamma)\frac{\ell-1}{L-1}, \quad \forall\ell\in[L],\gamma\in[0,1]
+$$&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;We observe that even with strong downscaling of shallow layers, the target task accuracy remains nearly unaffected. In contrast, when we downscale the deeper layers, target task accuracy drops significantly.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251018000929-67k34bh.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;首先进行 Fine-Tune 获得各个层的更新量，然后用 $\lambda^{(\ell)}$ 对各层的更新量进行放缩，$\gamma$ 越小说明浅层更新量被缩小得越厉害。左图中可以看出浅层更新量的改变几乎不影响 Target Task。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Shallow-Layer Updates Undermine Zero-Shot Generalization&lt;&#x2F;strong&gt;: We further hypothesize that the &lt;u&gt;degradation of performance on control tasks is largely due to distortions in the shallow layers&lt;&#x2F;u&gt;. We can see that as the strength of the shallow-layer downscaling increases, the accuracy on control tasks approaches the original pre-trained model’s performance.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Improved Trade-Off between Target and Control Performance&lt;&#x2F;strong&gt;: We apply the method to a 20-task computer vision benchmark. Figure 2 shows that &lt;u&gt;fine-tuning degrades zero-shot generalization&lt;&#x2F;u&gt;, and our method improves generalization while maintaining near-full target task accuracy.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251018001726-mj8r64h.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;上图中的每个点分别对应 20 个任务。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;method&quot;&gt;Method&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Layer-increasing Network Scaling&lt;&#x2F;strong&gt;: Given a task vector $\tau$ with $L$ layer blocks, we apply layer-wise linear scaling to adjust the contributions of shallow and deep layers using:&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\tau_{\mathrm{LiNeS}}=\mathrm{concat}\left(\lambda^{(1)}\tau^{(1)},\ldots,\lambda^{(L)}\tau^{(L)}\right),\quad\mathrm{where} \quad \lambda^{(\ell)}=\alpha+\beta\frac{\ell-1}{L-1},\quad\forall\ell\in[L].
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Application in Model Merging&lt;&#x2F;strong&gt;: Notice that $\tau$ can correspond to either a single-task residual or, in the context of model merging, a multi-task vector obtained by merging the residuals of multiple checkpoints fine-tuned starting from a common initialization.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;experiments&quot;&gt;Experiments&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Improving Robust Fine-Tuning for OOD Generalization&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;WiSE-FT: Linearly interpolate between the pre-trained and the fine-tuned weights: $\tau: (1 - \gamma) \theta_0 + \gamma \theta = \theta_0 + \gamma \tau$ for $\gamma \in [0, 1]$.&lt;&#x2F;li&gt;
+&lt;li&gt;We evaluate CLIP models fine-tuned on ImageNet, considering $5$ OOD datasets.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251018002145-2cvbvku.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Improving Multi-Task Model Merging&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Task Arithmetic: Generate a multi-task vector $\tau_{\text{MTL}} = g(\tau_1, \cdots, \tau_T)$ with merging function $g$, and construct $\theta = \theta_0 + \lambda \cdot \tau_{\text{MTL}}$. In this work, “task arithmetic” is implemented by &lt;u&gt;averaging the task vectors&lt;&#x2F;u&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Task vector 指的是在某个 task 微调后，参数的变化量。&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Performance Loss during Merging: This performance decrease partially stems from interference among task vectors.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;We can edit each task vector with &lt;code&gt;LiNeS&lt;&#x2F;code&gt;​ before merging to restore the generalization to other tasks, or simply &lt;u&gt;edit the merged multi-task vector to preserve the shallow and general features&lt;&#x2F;u&gt;.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;We tune $\beta$ and set $\alpha$ to&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\alpha=\frac{1}{N_{\mathrm{models}}}\frac{\|\tau_{\mathrm{sum}}\|}{\|\tau_{\mathrm{MTL}}\|},\quad \mathrm{where} \quad \tau_{\mathrm{sum}}=\sum_{i=1}^{N_{\mathrm{models}}}\tau_{i}
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Computer Vision&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251018122124-ftko85a.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Natural Language Processing&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251018125205-hgttcda.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Model Soups for Merging Single-Task Models&lt;&#x2F;strong&gt;: Averaging in weight space &lt;u&gt;multiple models fine-tuned on the same task derived from the same pre-trained model&lt;&#x2F;u&gt; has been shown to increase target performance. We investigate whether &lt;code&gt;LiNeS&lt;&#x2F;code&gt;​ can enhance the test performance when merging single-task models.&lt;&#x2F;p&gt;
+&lt;p&gt;$$
+\theta_{\mathrm{soup}}=\theta_0+\tau_{\mathrm{soup}}, \quad \mathrm{where} \quad \tau_{\mathrm{soup}}=\frac{1}{N_{\mathrm{models}}}\sum_{i=1}^{N_{\mathrm{models}}}\left(\boldsymbol{\theta}_i-\boldsymbol{\theta}_0\right)
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251019111558-lcfmm78.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Uniform Soup 指把所有模型平等看待，Greedy Soup 表示保留一个验证集对模型进行筛选&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Improving Rewarded Soups&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Starting with an LLM parameterized by weights $\theta_0$, we first fine-tune it using SFT resulting in weights $\theta_{\text{SFT}}$.&lt;&#x2F;li&gt;
+&lt;li&gt;We then apply RLHF, training two independent policies via PPO to maximize the rewards $R_1$ and $R_2$.&lt;&#x2F;li&gt;
+&lt;li&gt;We linearly interpolate the residuals $\tau_1 = \theta_1 - \theta_{\text{SFT}}$ and $\tau_2 = \theta_2 - \theta_{\text{SFT}}$​&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;$$
+\theta_{RS}=\theta_{\mathrm{SFT}}+\lambda\tau_{1}+(1-\lambda)\tau_{2},\quad\lambda\in[0,1],
+$$&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251019111622-n86fpge.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;discussion&quot;&gt;Discussion&lt;&#x2F;h2&gt;
+&lt;p&gt;We compare &lt;code&gt;LiNeS&lt;&#x2F;code&gt;​ with prior work that optimizes the scaling coefficients via backpropagation:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ada-Merging: Minimizes the entropy loss of the predictions on the test set&lt;&#x2F;li&gt;
+&lt;li&gt;aTLAS: Minimizes a cross entropy loss on validation samples&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Both methods operate on a more fine-grained level and introduce coefficients per layer and per task. Ada-merging and aTLAS requires excessive memory overhead and multiple training epochs.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;lun-wen-yue-du-lines-post-training-layer-scaling-prevents-forgetting-and-enhances-model-merging-md&#x2F;assets&#x2F;image-20251019111723-pkugyw0.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;questions-and-comments&quot;&gt;Questions and Comments&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;模型合并和缓解遗忘很像：无非就是解决任务&#x2F;数据的冲突&lt;&#x2F;li&gt;
+&lt;li&gt;Layer-Wise：线性的 scaling 一定是最优的吗？能不能有更好的方式？&lt;&#x2F;li&gt;
+&lt;li&gt;Task-Wise：不同任务之间能不能更好的合并方式？&lt;&#x2F;li&gt;
+&lt;li&gt;Catastrophic Forgetting：Representation Learning 中有没有其他相关的结论，能直接拿来用？&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>梯度、黑塞矩阵</title>
         <published>2025-10-13T00:00:00+00:00</published>
         <updated>2025-10-13T00:00:00+00:00</updated>
