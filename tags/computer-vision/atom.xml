@@ -17,7 +17,40 @@
         <subtitle>Reichtum&#x27;s Blog</subtitle>
     <link href="https://reichtumqian.pages.dev/tags/computer-vision/atom.xml" rel="self" type="application/atom+xml"/>
     <link href="https://reichtumqian.pages.dev/tags/computer-vision/" rel="alternate" type="text/html"/>
-    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-09-15T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/computer-vision/atom.xml</id><entry xml:lang="zh">
+    <generator uri="https://www.getzola.org/">Zola</generator><updated>2025-10-20T00:00:00+00:00</updated><id>https://reichtumqian.pages.dev/tags/computer-vision/atom.xml</id><entry xml:lang="zh">
+        <title>CLIP：Contrastive Language-Image Pre-Training</title>
+        <published>2025-10-20T00:00:00+00:00</published>
+        <updated>2025-10-20T00:00:00+00:00</updated>
+        <author>
+            <name>Reichtum</name>
+        </author>
+        <link rel="alternate" href="https://reichtumqian.pages.dev/blog/clip-contrastive-language-image-pre-training/" type="text/html"/>
+        <id>https://reichtumqian.pages.dev/blog/clip-contrastive-language-image-pre-training/</id>
+        
+            <content type="html">&lt;p&gt;CLIP 和 MAE 是 ViT 模型的两大预训练方式，MAE 专为 ViT 设计，而 CLIP 主要是打通图像和文本的语义连接。&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;clip-yuan-li&quot;&gt;CLIP 原理&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;CLIP 概述&lt;&#x2F;strong&gt;：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;训练内容：CLIP 训练一个 Image Encoder 与一个 Text Encoder&lt;&#x2F;li&gt;
+&lt;li&gt;训练目标：如果图像与文本是匹配的，则将它们在特征空间中拉近，如果是不匹配的，则将它们推远&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;CLIP 训练过程(Contrastive Pre-Training)&lt;&#x2F;strong&gt; ：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入：&lt;strong&gt;单个批次&lt;&#x2F;strong&gt;输入 $N$ 个【图像-文本】对&lt;&#x2F;li&gt;
+&lt;li&gt;编码：$N$ 张图片被送入 Image Encoder，生成 $N$ 个图像特征向量。同时 $N$ 段文本被送入 Text Encoder，生成 $N$ 个文本特征向量&lt;&#x2F;li&gt;
+&lt;li&gt;对比学习：模型生成一个 $N \times N$ 的相似度矩阵，其中 $(I_i, T_j)$ 表示第 $i$ 张图像与第 $j$ 段文本的相似度&lt;&#x2F;li&gt;
+&lt;li&gt;优化训练：最大化对角相似度，最小化非对角相似度&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;应用&#x2F;推理(零样本预测 Zero-shot Prediction)&lt;&#x2F;strong&gt; ：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建 Prompt：不能只用 &lt;code&gt;dog&lt;&#x2F;code&gt;​ 之类的单个词，而是要使用 &lt;code&gt;A photo of a {object}&lt;&#x2F;code&gt;​ 之类的句子。选择 $M$ 个目标单词，构成 $M$ 个句子，并将句子传入文本编码器。&lt;&#x2F;li&gt;
+&lt;li&gt;输入图片：将要分类的图片输入&lt;strong&gt;已经训练好的图像编码器&lt;&#x2F;strong&gt;，得到特征向量 $I_1$。计算其与前一步文本特征向量相似度。得分最高的文本对应的类别即为最终预测结果。&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;reichtumqian.pages.dev&#x2F;blog&#x2F;clip-contrastive-language-image-pre-training&#x2F;assets&#x2F;image-20251020114419-iapp0c3.png&quot; alt=&quot;image&quot; &#x2F;&gt;​&lt;&#x2F;p&gt;
+&lt;p&gt;‍&lt;&#x2F;p&gt;
+</content>
+        </entry><entry xml:lang="zh">
         <title>论文阅读：Parameter-Efficient Fine-Tuning with Controls</title>
         <published>2025-09-15T00:00:00+00:00</published>
         <updated>2025-09-15T00:00:00+00:00</updated>
